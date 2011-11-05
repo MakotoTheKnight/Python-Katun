@@ -1,6 +1,9 @@
+/* Specify foreign keys to be ON in order for them to work properly. */
+
 PRAGMA foreign_keys=ON;
 BEGIN TRANSACTION;
 
+/* Schemas */
 CREATE TABLE song(
 	location TEXT,
 	artist TEXT,
@@ -69,6 +72,8 @@ CREATE TABLE album(
 	track_count INTEGER,
 	FOREIGN KEY(location, artist, filetype, title) references song(location, artist, filetype, title)
 );
+
+/* Triggers */
 
 CREATE TRIGGER IF NOT EXISTS song.updateLocation AFTER UPDATE OF location on song FOR EACH ROW
 BEGIN (
@@ -160,5 +165,10 @@ BEGIN
 	DELETE FROM contains WHERE contains.pname = old.pname;
 )
 END;
+
+/* Indexes/Indices*/
+
+CREATE INDEX IF NOT EXISTS KeyIndex ON song (location, artist, filetype, title);
+CREATE INDEX IF NOT EXISTS KeyIndex ON user (uid);
 
 COMMIT;
