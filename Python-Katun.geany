@@ -16,8 +16,9 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=0
+current_page=1
 FILE_NAME_0=107;Python;0;16;1;1;1;/home/makoto/python-katun/trunk/katun-web/test.py;0;4
+FILE_NAME_1=192;Python;0;16;1;1;1;/home/makoto/python-katun/trunk/katun-web/parser.py;0;4
 
 [build-menu]
 PythonFT_01_LB=
