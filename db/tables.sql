@@ -25,18 +25,50 @@ CREATE TABLE user(
 	uname TEXT
 );
 
-CREATE TABLE contains(pname TEXT, location TEXT, artist TEXT, filetype TEXT, title TEXT, FOREIGN KEY(pname) references playlist(pname), FOREIGN KEY(location, artist, filetype, title) references song(location, artist, filetype, title));
+CREATE TABLE contains(
+	pname TEXT,
+	location TEXT,
+	artist TEXT,
+	filetype TEXT,
+	title TEXT,
+	FOREIGN KEY(pname) references playlist(pname),
+	FOREIGN KEY(location, artist, filetype, title) references song(location, artist, filetype, title)
+);
 
-CREATE TABLE favorites(uid INTEGER PRIMARY KEY ASC, location TEXT, artist TEXT, filetype TEXT, title TEXT, FOREIGN KEY(location, artist, filetype, title) references song(location, artist, filetype, title));
+CREATE TABLE favorites(
+	uid INTEGER PRIMARY KEY ASC,
+	location TEXT,
+	artist TEXT,
+	filetype TEXT,
+	title TEXT,
+	FOREIGN KEY(location, artist, filetype, title) references song(location, artist, filetype, title)
+);
 
-CREATE TABLE duplicates(location TEXT, artist TEXT, filetype TEXT, title TEXT, duplicate_location TEXT PRIMARY KEY, FOREIGN KEY(location, artist, filetype, title) references song(location, artist, filetype, title));
+CREATE TABLE duplicates(
+	location TEXT,
+	artist TEXT,
+	filetype TEXT,
+	title TEXT,
+	duplicate_location TEXT PRIMARY KEY,
+	FOREIGN KEY(location, artist, filetype, title) references song(location, artist, filetype, title)
+);
 
-CREATE TABLE playlist(pname TEXT PRIMARY KEY, uid INTEGER, count INTEGER, FOREIGN KEY(uid) references user(uid));
+CREATE TABLE playlist(
+	pname TEXT PRIMARY KEY,
+	uid INTEGER,
+	count INTEGER,
+	FOREIGN KEY(uid) references user(uid)
+);
 
-CREATE TABLE album(location TEXT, artist TEXT, filetype TEXT, title TEXT, album_art_filename TEXT PRIMARY KEY, track_count INTEGER, FOREIGN KEY(location, artist, filetype, title) references song(location, artist, filetype, title));
-
-COMMIT;
-
+CREATE TABLE album(
+	location TEXT,
+	artist TEXT,
+	filetype TEXT,
+	title TEXT,
+	album_art_filename TEXT PRIMARY KEY,
+	track_count INTEGER,
+	FOREIGN KEY(location, artist, filetype, title) references song(location, artist, filetype, title)
+);
 
 CREATE TRIGGER IF NOT EXISTS song.updateLocation AFTER UPDATE OF location on song FOR EACH ROW
 BEGIN (
@@ -86,6 +118,35 @@ BEGIN (
 )
 END;
 
+CREATE TRIGGER IF NOT EXISTS song.deleteSong BEFORE DELETE ON song
+BEGIN (
+	DELETE FROM album
+	WHERE song.location = album.location and song.artist = album.artist and song.filetype = album.filetype and song.title = album.title;
+	
+	DELETE FROM favorites
+	WHERE song.location = favorites.location and song.artist = favorites.artist and song.filetype = favorites.filetype and song.title = favorites.title;
+	
+	DELETE FROM duplicates
+	WHERE song.location = duplicates.location and song.artist = duplicates.artist and song.filetype = duplicates.filetype and song.title = duplicates.title;
+	
+	DELETE FROM contains
+	WHERE song.location = contains.location and song.artist = contains.artist and song.filetype = contains.filetype and song.title = contains.title;
+)
+END;
+
+CREATE TRIGGER IF NOT EXISTS song.checkDuplicates AFTER INSERT ON song
+BEGIN
+	(
+		INSERT INTO duplicates (location, artist, filetype, title)
+		VALUES (
+			SELECT location, artist, filetype, title AS duplicate
+			FROM song
+			WHERE song.location = duplicate.location and song.artist = duplicate.artist and song.filetype = duplicate.filetype and song.title = duplicate.title;
+		)
+	)
+END;
+
+
 CREATE TRIGGER IF NOT EXISTS playlist.updateName AFTER UPDATE OF pname on playlist
 BEGIN
 	(
@@ -93,9 +154,11 @@ BEGIN
 )
 END;
 
-CREATE TRIGGER IF NOT EXISTS playlist.deleteName AFTER DELETE ON pname on playlist
+CREATE TRIGGER IF NOT EXISTS playlist.deleteName AFTER DELETE ON playlist
 BEGIN
 	(
 	DELETE FROM contains WHERE contains.pname = old.pname;
 )
 END;
+
+COMMIT;
