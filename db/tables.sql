@@ -25,7 +25,8 @@ CREATE TABLE song(
 
 CREATE TABLE user(
 	uid INTEGER PRIMARY KEY ASC,
-	uname TEXT
+	uname TEXT,
+	password TEXT
 );
 
 CREATE TABLE contains(
