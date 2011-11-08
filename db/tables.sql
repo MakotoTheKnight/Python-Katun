@@ -39,12 +39,13 @@ CREATE TABLE contains(
 );
 
 CREATE TABLE favorites(
-	uid INTEGER PRIMARY KEY ASC,
+	uid INTEGER,
 	location TEXT,
 	artist TEXT,
 	filetype TEXT,
 	title TEXT,
-	FOREIGN KEY(location, artist, filetype, title) references song(location, artist, filetype, title)
+	FOREIGN KEY(location, artist, filetype, title) references song(location, artist, filetype, title),
+	FOREIGN KEY(uid) references user(uid)
 );
 
 CREATE TABLE duplicates(
