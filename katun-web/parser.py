@@ -36,7 +36,7 @@ class Parser:
 				try:
 					self.parse(nfile)
 				except InvalidSongException, e:
-					print nfile + str(e)
+					print nfile + ' ' + str(e)
 			if os.path.isdir(nfile):
 				self.walk(nfile)
 	
@@ -50,34 +50,36 @@ class Parser:
 			title = song['title'][0]
 		except Exception:
 			raise InvalidSongException("Song doesn't have an artist or title, so will not be added into database.")
-		try:
+		if 'genre' in song:
 			genre = song['genre'][0]
-		except Exception:
+		else:
 			genre = u'Unknown'
-		try:
+		if 'track' in song:
 			track = song['track'][0]
-		except Exception:
+		else:
 			track = 0
-		try:
+		if 'album' in song:
 			album = song['album'][0]
-		except Exception:
+		else:
 			album = u'Unknown'
-		try:
+		if 'bitrate' in song:
 			bitrate = int(song['bitrate'][0])
-		except Exception:
+		else:
 			bitrate = 0
-		try:
+		if 'year' in song:
 			year = int(song['year'][0])
-		except Exception:
+		else:
 			year = 0
-		try:
+		if 'month' in song:
 			month = int(song['month'][0])
-		except Exception:
+		else:
 			month = 0
 		attributes = filename, artist, filename.split('.')[-1], title, genre, track, album, bitrate, year, month
 		try:
 			self.cursor.execute("INSERT INTO song VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", attributes)
 			self.connect.commit()
+		except Exception, e:
+			pass
 		except InvalidSongException, e:
 			print "Song " + filename + " couldn't  be read.  Reason: " + e
 		
