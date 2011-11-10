@@ -25,15 +25,15 @@ INSERT INTO song VALUES('loc8', 'art2', 'ogg', 'tit8', 'gen1', 1, 'alb2', 128, 2
 INSERT INTO song VALUES('loc9', 'art2', 'ogg', 'tit9', 'gen2', 1, 'alb3', 128, 2008, 1);
 INSERT INTO song VALUES('loc10', 'art2', 'ogg', 'tit10', 'gen3', 1, 'alb4', 128, 2008, 1);
 
-SELECT COUNT(*) FROM song;
+SELECT title, COUNT(*) FROM song;
 
 -- Precondition:  The duplicates table is empty.
 -- Postcondition:  The duplicates table contains two entries.
 
 INSERT INTO song VALUES('loc99', 'art2', 'ogg', 'tit8', 'gen1', 1, 'alb2', 128, 2008, 1);
-INSERT INTO song VALUES('loc100', 'art1', 'ogg', 'tit1', 'gen1', 1, 'alb1', 128, 2008, 1);
-
-SELECT COUNT(*) FROM duplicates;
+SELECT * from duplicates;
+INSERT INTO song VALUES('loc100', 'art1', 'ogg', 'tit1', 'gen1', 1, 'alb1', 128, 2000, 1);
+SELECT filetype, count(filetype) FROM duplicates;
 
 -- Precondition:  The favorites table is empty.
 -- Postcondition:  'user' labels a song as a favorite.
@@ -46,6 +46,3 @@ SELECT COUNT(*) FROM favorites;
 -- Postcondition:  The song is changed from OGG to MP3.  It is reflected in both song and favorites.
 
 UPDATE song	SET filetype = 'MP3' WHERE title = 'tit1';
-
-SELECT * FROM song WHERE title = 'tit1';
-SELECT * FROM favorites WHERE title = 'tit1';

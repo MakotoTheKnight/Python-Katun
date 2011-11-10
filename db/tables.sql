@@ -54,7 +54,7 @@ CREATE TABLE duplicates(
 	artist TEXT,
 	filetype TEXT,
 	title TEXT,
-	duplicate_location TEXT PRIMARY KEY,
+	--duplicate_location TEXT PRIMARY KEY,
 	FOREIGN KEY(location, artist, filetype, title) references song(location, artist, filetype, title)
 );
 
@@ -126,10 +126,10 @@ BEGIN
 	INSERT INTO duplicates (location, artist, filetype, title)
 		SELECT location, artist, filetype, title
 		FROM song
-		WHERE artist = (SELECT artist from song)
-			and filetype = (SELECT filetype from song)
-			and title = (SELECT title from song)
-			and location <> (SELECT location from song);
+		WHERE artist = new.artist
+			and filetype = new.filetype
+			and title = new.title
+			and location <> new.location;
 END;
 
 
