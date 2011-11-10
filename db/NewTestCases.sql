@@ -29,7 +29,7 @@ INSERT INTO Song VALUES('C:/music/Song', '311', '.mp3', 'Come Original',
 
 
 --Precondition:  0 songs in favorites table
-INSERT INTO Favorites VALUES(2, 'C:/music/Favorites', 
+INSERT INTO Favorites VALUES(1, 'C:/music/Favorites', 
 	'311', '.mp3', 'Come Original');
 --Postcondition:  1 song in favorites table, and 1 in contains
 
