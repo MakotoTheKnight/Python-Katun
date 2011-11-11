@@ -31,7 +31,6 @@ class Parser:
 		d = os.path.abspath(d)
 		for f in [f for f in os.listdir(d) if not f in [".",".."]]:
 			nfile = os.path.join(d, f)
-			#print nfile
 			if os.path.isfile(nfile):
 				try:
 					self.parse(nfile)
