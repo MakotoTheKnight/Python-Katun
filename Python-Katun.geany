@@ -16,7 +16,7 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=1
+current_page=0
 FILE_NAME_0=1341;Python;0;16;1;1;1;/home/makoto/python-katun/trunk/katun-web/parser.py;0;4
 FILE_NAME_1=4956;SQL;0;16;1;1;1;/home/makoto/python-katun/trunk/db/tables.sql;0;4
 FILE_NAME_2=336;SQL;0;16;1;1;1;/home/makoto/python-katun/trunk/db/DupCases.sql;0;4
