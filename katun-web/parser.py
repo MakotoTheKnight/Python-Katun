@@ -53,18 +53,14 @@ class Parser:
 			genre = song['genre'][0]
 		else:
 			genre = u'Unknown'
-		if 'track' in song:
-			track = song['track'][0]
+		if 'tracknumber' in song:
+			track = song['tracknumber'][0]
 		else:
 			track = 0
 		if 'album' in song:
 			album = song['album'][0]
 		else:
 			album = u'Unknown'
-		if 'bitrate' in song:
-			bitrate = int(song['bitrate'][0])
-		else:
-			bitrate = 0
 		if 'year' in song:
 			year = int(song['year'][0])
 		else:
@@ -73,6 +69,11 @@ class Parser:
 			month = int(song['month'][0])
 		else:
 			month = 0
+		try:
+			bitrate = int(song.info.bitrate)
+		except AttributeError: # Likely due to us messing with FLAC
+			bitrate = 999999 # Set to a special flag value, to indicate that this is a lossless file.
+		
 		attributes = filename, artist, filename.split('.')[-1], title, genre, track, album, bitrate, year, month
 		try:
 			self.cursor.execute("INSERT INTO song VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", attributes)
