@@ -3,7 +3,7 @@
 # Katun MP3/Ogg Vorbis Parser
 # This library is designated to parse the files from a user's library.
 
-import mutagen, os, sqlite3, exceptions, time
+import lib.mutagen as mutagen, os, sqlite3, exceptions, time
 
 #path = raw_input("Insert the full path of the songs you want to parse. >\t")
 
@@ -15,7 +15,7 @@ class Parser:
 	location, artist, filetype, title, genre, track, album, bitrate, year, and month.
 	Only location, artist, filetype, and title must be non-empty.'''
 	
-	def __init__(self, path, db_path="../../db/Katun.db"):
+	def __init__(self, path, db_path="../db/Katun.db"):
 		'''Accept a path to the music directory and (optionally) the database.'''
 		self.path, self.db_path = path, db_path
 		self.connect = sqlite3.connect(db_path)
