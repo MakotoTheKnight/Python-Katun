@@ -13,8 +13,9 @@ CREATE TABLE song(
 	track INTEGER,
 	album TEXT,
 	bitrate INTEGER,
-	year INTEGER,
-	month INTEGER,
+	year TEXT,
+	entryorder INTEGER,
+	--month INTEGER,
 	PRIMARY KEY(
 		location,
 		artist,
@@ -76,6 +77,8 @@ CREATE TABLE album(
 );
 
 /* Triggers */
+
+
 
 CREATE TRIGGER updateLocation AFTER UPDATE OF location on song FOR EACH ROW
 BEGIN
@@ -188,7 +191,8 @@ BEGIN
 		WHERE artist = new.artist
 		AND filetype = new.filetype
 		AND title = new.title
-		AND location <> new.location;
+		AND location <> new.location
+		AND new.entryorder > entryorder;
 END;
 
 CREATE TRIGGER updateCount AFTER INSERT ON contains FOR EACH ROW
