@@ -36,10 +36,15 @@ class Parser:
 		generator = os.walk(d)
 		for folder in generator:
 			for f in folder[2]: # foreach file in the folder...
+				f = unicode(f, 'utf-8')
 				try:
-					self.parse(os.path.join(folder[0], f))
+					supported = 'mp3', 'ogg', 'flac'
+					if f.split('.')[-1] in supported:
+						self.parse(os.path.join(folder[0], f))
+					else:
+						print "Not going to bother with file " + f
 				except Exception, e:
-					print f + str(e)
+					print f + unicode(str(e), 'utf-8')
 	
 	def parse(self, filename):
 		'''Parse the file to retrieve the information we want.
@@ -47,7 +52,6 @@ class Parser:
 		It may be the case that, in the future, we require more information from a song than is provided at this time.
 		Examine all tags that can be retrieved from a mutagen.File object.'''
 		self.attempted += 1
-		filename = filename.encode('utf-8')
 		song = mutagen.File(filename, easy=True)
 		artist, title, genre, track, album, bitrate, year, month = '', '', '', '', '', '', '', ''
 		try:
@@ -81,7 +85,7 @@ class Parser:
 			self.connect.commit()
 			self.filecount += 1
 		except Exception, e:
-			raise InvalidSongException("Song not inserted into database: " + str(e))
+			raise InvalidSongException(" not inserted into database: " + unicode(str(e), 'utf-8'))
 
 
 def main():
