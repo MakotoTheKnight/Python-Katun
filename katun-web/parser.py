@@ -28,7 +28,7 @@ class Parser:
 		start = time.time()
 		self.walk(path)
 		stop = time.time()
-		print "Elapsed time: " + str(stop-start) + "\nTotal files entered: " + str(self.filecount) + "\nAttempted: " + str(self.attempted)
+		print u"Elapsed time: " + str(stop-start) + "\nTotal files entered: " + str(self.filecount) + "\nAttempted: " + str(self.attempted)
 	
 	def walk(self, d):
 		'''Walk down the file structure iteratively, gathering file names to be read in.'''
@@ -36,21 +36,21 @@ class Parser:
 		generator = os.walk(d)
 		for folder in generator:
 			for f in folder[2]: # foreach file in the folder...
-				f = unicode(f, 'utf-8')
 				try:
 					supported = 'mp3', 'ogg', 'flac'
 					if f.split('.')[-1] in supported:
-						self.parse(os.path.join(folder[0], f))
+						self.parse(unicode(os.path.join(folder[0], f), 'utf_8'))
 					else:
-						print "Not going to bother with file " + f
+						print u"Not going to bother with file " + unicode(os.path.join(folder[0], f), 'utf_8')
 				except Exception, e:
-					print f + unicode(str(e), 'utf-8')
+					print e.__unicode__()
 	
 	def parse(self, filename):
 		'''Parse the file to retrieve the information we want.
 		
 		It may be the case that, in the future, we require more information from a song than is provided at this time.
 		Examine all tags that can be retrieved from a mutagen.File object.'''
+		
 		self.attempted += 1
 		song = mutagen.File(filename, easy=True)
 		artist, title, genre, track, album, bitrate, year, month = '', '', '', '', '', '', '', ''
@@ -58,7 +58,7 @@ class Parser:
 			artist = song['artist'][0]
 			title = song['title'][0]
 		except Exception:
-			raise InvalidSongException("Cannot read " + filename + ": missing critical song information.")
+			raise InvalidSongException(u"Cannot read " + filename + ": missing critical song information.")
 		if 'genre' in song:
 			genre = song['genre'][0]
 		else:
@@ -81,17 +81,17 @@ class Parser:
 			bitrate = 999999 # Set to a special flag value, to indicate that this is a lossless file.
 		try:
 			attributes = filename, artist, filename.split('.')[-1], title, genre, track, album, bitrate, year, time.time()
-			self.cursor.execute("INSERT INTO song VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", attributes)
+			self.cursor.execute(u"INSERT INTO song VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", attributes)
 			self.connect.commit()
 			self.filecount += 1
 		except Exception, e:
-			raise InvalidSongException(" not inserted into database: " + unicode(str(e), 'utf-8'))
+			raise InvalidSongException(filename + u" was not inserted into database - " + str(e))
 
 
 def main():
 	'''main() functions are used to test the validity and performance of the module alone.
 	This function is to NEVER be called outside of testing purposes.'''
-	parser = Parser(raw_input("Enter the path of the music. > "))
+	parser = Parser(raw_input(u"Enter the path of the music. > "))
 	
 if __name__ == '__main__':
 	main()
