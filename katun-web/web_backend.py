@@ -48,23 +48,14 @@ class Favorites:
 	def GET(self):
 		return "Hello woorld!"
 
-
-class DatabaseInterface:
-	'''Specify the SQLite backend interface to the website.
-	
-	We know where the database is stored within the file structure, but if it doesn't exist, we can re-create it here.
-	The schema with which we create and populate the database, including triggers, is defined elsewhere.'''
-
-	def __init__(self, db="../Katun.db"):
-		self.db = db
-
-
 class HTMLError(Exception):
 	'''Specify a flexible HTML error.
 	The sorts of errors recognized are 404 and 403.'''
 	pass
 
 def main():
+	'''main() functions are used to test the validity and performance of the module alone.
+	This function is to NEVER be called outside of testing purposes.'''
 	app.run()
 	
 if __name__ == '__main__':

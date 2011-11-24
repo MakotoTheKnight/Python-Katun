@@ -16,8 +16,10 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=0
+current_page=2
 FILE_NAME_0=0;SQL;0;16;1;1;1;/home/makoto/python-katun/trunk/db/tables.sql;0;4
+FILE_NAME_1=73;Python;0;16;1;1;1;/home/makoto/python-katun/trunk/katun-web/parser.py;0;4
+FILE_NAME_2=687;Python;0;16;1;1;1;/home/makoto/python-katun/trunk/katun-web/web_backend.py;0;4
 
 [build-menu]
 PythonFT_01_LB=
