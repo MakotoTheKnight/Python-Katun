@@ -24,18 +24,13 @@ class Parser:
 	def __init__(self, path, db_path="../db/Katun.db", startfresh=False):
 		'''Accept a path to the music directory and (optionally) the database.
 		Unless otherwise specified in another document, the database should exist in the ../db folder.'''
-		self.path, self.db_path = path, db_path
-		self.connect = sqlite3.connect(db_path)
-		self.cursor = self.connect.cursor()
 		self.buf = [] # Establish a commit buffer, so we can read the file structure efficiently and commit once.
+		self.db = DatabaseInterface(db_path)
 		
 		if startfresh:
-			DatabaseInterface.reset_database()
-		
-		start = time.time()
+			self.db.reset_database()		
+			
 		self.walk(path)
-		stop = time.time()
-		#print u"Elapsed time: " + str(stop-start)
 	
 	def walk(self, d):
 		'''Walk down the file structure iteratively, gathering file names to be read in.'''
@@ -52,10 +47,9 @@ class Parser:
 				except Exception, e:
 					print e.__unicode__()
 		try:
-			self.cursor.executemany(u"INSERT INTO song VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", self.buf)
-			self.connect.commit()
+			self.db.execute_batch_insert_statement(u"INSERT INTO song VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", self.buf)
 		except Exception, e:
-			print u"It is *extremely* unlikely that something should have occured here.  If it has, then you've got problems.  GL HF DD KA\n\n" + str(e)
+			print e.__unicode__()
 		finally:
 			del self.buf
 			self.buf = [] # wipe the buffers clean so we can repeat a batch parse again.
@@ -99,7 +93,7 @@ class Parser:
 def main():
 	'''main() functions are used to test the validity and performance of the module alone.
 	This function is to NEVER be called outside of testing purposes.'''
-	parser = Parser(raw_input(u"Enter the path of the music. > "))
+	parser = Parser(raw_input(u"Enter the path of the music. > "), startfresh=True)
 	
 if __name__ == '__main__':
 	main()

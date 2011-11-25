@@ -16,12 +16,11 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=3
-FILE_NAME_0=73;SQL;0;16;1;1;1;/home/makoto/python-katun/trunk/db/tables.sql;0;4
-FILE_NAME_1=3532;Python;0;16;1;1;1;/home/makoto/python-katun/trunk/katun-web/parser.py;0;4
+current_page=1
+FILE_NAME_0=1209;SQL;0;16;1;1;1;/home/makoto/python-katun/trunk/db/tables.sql;0;4
+FILE_NAME_1=3226;Python;0;16;1;1;1;/home/makoto/python-katun/trunk/katun-web/parser.py;0;4
 FILE_NAME_2=510;Python;0;16;1;1;1;/home/makoto/python-katun/trunk/katun-web/web_backend.py;0;4
-FILE_NAME_3=1671;Python;0;16;1;1;1;/home/makoto/python-katun/trunk/katun-web/db_backend.py;0;4
-FILE_NAME_4=146;SQL;0;16;1;1;1;/home/makoto/python-katun/trunk/db/Drop.sql;0;4
+FILE_NAME_3=2093;Python;0;16;1;1;1;/home/makoto/python-katun/trunk/katun-web/db_backend.py;0;4
 
 [build-menu]
 PythonFT_01_LB=

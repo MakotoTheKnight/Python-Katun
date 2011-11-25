@@ -18,15 +18,13 @@ class DatabaseInterface:
 
 	def __init__(self, db_path="../Katun.db"):
 		self.db_path = db_path
-		self.connection = sqlite3.connect(db_path)
-		self.cursor = self.connection.cursor()
 
 	def reset_database(self):
 		'''"Reset" the database. 
 
 		This operation deletes the db file associated with K'atun.'''
-		
-		os.remove(self.db_path)
+		if os.path.exists(self.db_path):
+			os.remove(self.db_path)
 		self.__build_database()
 
 	def __build_database(self):
@@ -34,11 +32,10 @@ class DatabaseInterface:
 		
 		This operation is valid only after reset_database() is called, otherwise, undefined behavior may occur."""
 		
-		self.connect = sqlite3.connect(self.db_path)
-		self.cursor = self.connect.cursor()
-		with open('../tables.sql', encoding='utf_8', 'r') as f:
-			self.cursor.executescript(f.read())
-			self.connection.commit()
+		with open('../db/tables.sql', 'r') as f:
+			with sqlite3.connect(self.db_path) as con:
+				con.executescript(f.read())
+				con.commit()
 
 	def commit(self):
 		"""A common interface for committing changes to the database.
@@ -52,20 +49,42 @@ class DatabaseInterface:
 
 		self.connection.rollback()
 	
-	def check_valid_sql(self, sql):
-		"""Check if a statement is, indeed, valid SQL.  Follows the specifications of sqlite3.complete_statement()."""
-		pass
 	
-	def execute_sql(self, sql):
-		"""Execute a valid SQL statement.
+	def execute_query(self, sql):
+		"""Execute a valid SQL query.
 		
 		We first check to see if it is valid SQL, and if it isn't, we pass through a sqlite3.Error which is to be handled from the caller.
 		Upon successful validation, we execute the statement.  If an error occurs, we pass the error back to the caller."""
 		
-		pass
-
-	def execute_batch_sql(self, sql, *statements):
-		"""Execute multiple, valid SQL statements.
+		if not sqlite3.complete_statement(sql):
+			raise sqlite3.Error(u"The statement you provided isn't valid SQL.")
 		
-		We check to see if it is valid SQL, as with execute_sql.  We allow the statements through if they are valid.  All errors are passed to the caller."""
-		self.cursor.executemany(unicode(sql, 'utf_8'), statements)
+		with sqlite3.connect(self.db_path) as con:
+			con.execute(sql)
+
+	def execute_insert_statement(self, sql, parameters):
+		"""Execute a valid SQL insert statement using qmark notation.
+		
+		We first check to see if it is valid SQL, and if it isn't, we pass through a sqlite3.Error which is to be handled from the caller.
+		Upon successful validation, we execute the statement.  If an error occurs, we pass the error back to the caller."""
+		
+		if not '?' in sql:
+			raise sqlite3.Error(u"The SQL statement provided was probably valid, but it didn't contain qmark notation.")
+		with sqlite3.connect(self.db_path) as con:
+			try:
+				con.execute(sql, parameters)
+			except Exception, e:
+				print e.__unicode__()
+
+	def execute_batch_insert_statement(self, sql, statements):
+		"""Execute a batch-oriented SQL statement using qmark notation."""
+		if not '?' in sql:
+			raise sqlite3.Error(u"The SQL statement provided was probably valid, but it didn't contain qmark notation.")
+		
+		with sqlite3.connect(self.db_path) as con:
+			try:
+				print "Committing..."
+				con.executemany(sql, statements)
+				con.commit()
+			except Exception, e:
+				print e.__unicode__()
