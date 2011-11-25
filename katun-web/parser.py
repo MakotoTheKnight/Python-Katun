@@ -5,6 +5,7 @@
 
 import lib.mutagen as mutagen, os, sqlite3, exceptions, time
 
+__all__ = ['InvalidSongException', 'Parser']
 
 class InvalidSongException(Exception): pass
 
@@ -23,19 +24,19 @@ class Parser:
 		self.path, self.db_path = path, db_path
 		self.connect = sqlite3.connect(db_path)
 		self.cursor = self.connect.cursor()
-		self.filecount, self.attempted = 0, 0
+		self.buf = [] # Establish a commit buffer, so we can read the file structure efficiently and commit once.
 		
 		start = time.time()
 		self.walk(path)
 		stop = time.time()
-		print u"Elapsed time: " + str(stop-start) + "\nTotal files entered: " + str(self.filecount) + "\nAttempted: " + str(self.attempted)
+		print u"Elapsed time: " + str(stop-start)
 	
 	def walk(self, d):
 		'''Walk down the file structure iteratively, gathering file names to be read in.'''
 		d = os.path.abspath(d)
 		generator = os.walk(d)
 		for folder in generator:
-			for f in folder[2]: # foreach file in the folder...
+			for f in folder[2]: # for each file in the folder...
 				try:
 					supported = 'mp3', 'ogg', 'flac'
 					if f.split('.')[-1] in supported:
@@ -44,14 +45,21 @@ class Parser:
 						print u"Not going to bother with file " + unicode(os.path.join(folder[0], f), 'utf_8')
 				except Exception, e:
 					print e.__unicode__()
+		try:
+			self.cursor.executemany(u"INSERT INTO song VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", self.buf)
+			self.connect.commit()
+		except Exception, e:
+			print u"There was an error and I'm not even sure what happened.  Good luck!\n\n" + str(e)
+		finally:
+			del self.buf
+			self.buf = [] # wipe the buffers clean so we can repeat a batch parse again.
 	
 	def parse(self, filename):
 		'''Parse the file to retrieve the information we want.
 		
 		It may be the case that, in the future, we require more information from a song than is provided at this time.
-		Examine all tags that can be retrieved from a mutagen.File object.'''
+		Examine all tags that can be retrieved from a mutagen.File object, and adjust the database's schema accordingly.'''
 		
-		self.attempted += 1
 		song = mutagen.File(filename, easy=True)
 		artist, title, genre, track, album, bitrate, year, month = '', '', '', '', '', '', '', ''
 		try:
@@ -79,13 +87,7 @@ class Parser:
 			bitrate = int(song.info.bitrate)
 		except AttributeError: # Likely due to us messing with FLAC
 			bitrate = 999999 # Set to a special flag value, to indicate that this is a lossless file.
-		try:
-			attributes = filename, artist, filename.split('.')[-1], title, genre, track, album, bitrate, year, time.time()
-			self.cursor.execute(u"INSERT INTO song VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", attributes)
-			self.connect.commit()
-			self.filecount += 1
-		except Exception, e:
-			raise InvalidSongException(filename + u" was not inserted into database - " + str(e))
+		self.buf.append((filename, artist, filename.split('.')[-1], title, genre, track, album, bitrate, year, time.time()))
 
 
 def main():
