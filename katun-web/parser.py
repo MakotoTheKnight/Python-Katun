@@ -4,8 +4,11 @@
 # This library is designated to parse the files from a user's library.
 
 import lib.mutagen as mutagen, os, sqlite3, exceptions, time
+from db_backend import DatabaseInterface
 
 __all__ = ['InvalidSongException', 'Parser']
+
+__metaclass__ = type
 
 class InvalidSongException(Exception): pass
 
@@ -18,7 +21,7 @@ class Parser:
 	the location and filetype of the song trivially; however, if artist and title do not exist, then we
 	cannot parse the song.'''
 	
-	def __init__(self, path, db_path="../db/Katun.db"):
+	def __init__(self, path, db_path="../db/Katun.db", startfresh=False):
 		'''Accept a path to the music directory and (optionally) the database.
 		Unless otherwise specified in another document, the database should exist in the ../db folder.'''
 		self.path, self.db_path = path, db_path
@@ -26,10 +29,13 @@ class Parser:
 		self.cursor = self.connect.cursor()
 		self.buf = [] # Establish a commit buffer, so we can read the file structure efficiently and commit once.
 		
+		if startfresh:
+			DatabaseInterface.reset_database()
+		
 		start = time.time()
 		self.walk(path)
 		stop = time.time()
-		print u"Elapsed time: " + str(stop-start)
+		#print u"Elapsed time: " + str(stop-start)
 	
 	def walk(self, d):
 		'''Walk down the file structure iteratively, gathering file names to be read in.'''
@@ -41,15 +47,15 @@ class Parser:
 					supported = 'mp3', 'ogg', 'flac'
 					if f.split('.')[-1] in supported:
 						self.parse(unicode(os.path.join(folder[0], f), 'utf_8'))
-					else:
-						print u"Not going to bother with file " + unicode(os.path.join(folder[0], f), 'utf_8')
+					#else:
+						#print u"Not going to bother with file " + unicode(os.path.join(folder[0], f), 'utf_8')
 				except Exception, e:
 					print e.__unicode__()
 		try:
 			self.cursor.executemany(u"INSERT INTO song VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", self.buf)
 			self.connect.commit()
 		except Exception, e:
-			print u"There was an error and I'm not even sure what happened.  Good luck!\n\n" + str(e)
+			print u"It is *extremely* unlikely that something should have occured here.  If it has, then you've got problems.  GL HF DD KA\n\n" + str(e)
 		finally:
 			del self.buf
 			self.buf = [] # wipe the buffers clean so we can repeat a batch parse again.
