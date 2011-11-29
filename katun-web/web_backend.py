@@ -1,62 +1,57 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-# Katun Website Backend
+# K'atun Website Backend
 # This backend acts as an intermediary between the database and the end user, allowing for safe operations on the database.
 # The intention of this design is to mitigate potential SQL injections into the database, causing corruption and/or data loss.
 
-import lib.web as web, exceptions
+import cherrypy, os, webbrowser
+from db_backend import DatabaseInterface
+from mako.template import Template
+from parser import Parser
 
-__metaclass__ = type
 
-urls = (
-	'/', 'Index',
-	'/music', 'Music',
-	'/music/duplicates', 'Duplicates',
-	'/playlists', 'Playlists',
-	'/favorites', 'Favorites'
+class Katun_Website(object):
 	
-)
-app = web.application(urls, globals())
-
-class Index:
-	'''Define the index class.  We'll focus on making it pretty later.'''
+	def __init__(self):
+		self.interface = DatabaseInterface()
 	
-	def GET(self):
-		return "Hello world!"
-		
-class Music:
-	'''Define the Music class.  We'll focus on making it pretty later.'''
 	
-	def GET(self):
-		return "Hello warld!"
-		
-class Duplicates:
-	'''Define the Duplicates class.  We'll focus on making it pretty later.'''
+	@cherrypy.expose
+	def index(self):
+		template = Template(filename="templates/katun_layout.html")
+		return template.render_unicode(title="Index")
 	
-	def GET(self):
-		return "Hello werld!"
-		
-class Playlists:
-	'''Define the Playlists class.  We'll focus on making it pretty later.'''
+	@cherrypy.expose
+	def music(self):
+		return "Hello world inside of the MUSIC method."
 	
-	def GET(self):
-		return "Hello wurld!"
-		
-class Favorites:
-	'''Define the Favorites class.  We'll focus on making it pretty later.'''
+	@cherrypy.expose
+	def duplicates(self):
+		return "Hello world, inside of the DUPLICATES method."
 	
-	def GET(self):
-		return "Hello woorld!"
-
-class HTMLError(Exception):
-	'''Specify a flexible HTML error.
-	The sorts of errors recognized are 404 and 403.'''
-	pass
+	@cherrypy.expose
+	def playlists(self):
+		return "Hello world, inside of the PLAYLISTS method."
+	
+	@cherrypy.expose
+	def favorites(self):
+		return "Hello world, inside of the FAVORITES method."
 
 def main():
 	'''main() functions are used to test the validity and performance of the module alone.
 	This function is to NEVER be called outside of testing purposes.'''
-	app.run()
+	
+	conf = {
+		'/':
+			{'tools.staticdir.root': os.path.dirname(os.path.abspath(__file__))},
+		'/templates':
+		{
+			'tools.staticfile.on': True,
+			'tools.staticfile.filename': os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates/katun.css')
+		}
+	}
+	
+	cherrypy.quickstart(Katun_Website(), config=conf)
 	
 if __name__ == '__main__':
 	main()

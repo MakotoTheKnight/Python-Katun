@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-# Katun MP3/Ogg Vorbis Parser
+# K'atun MP3/Ogg Vorbis Parser
 # This library is designated to parse the files from a user's library.
 
 import lib.mutagen as mutagen, os, sqlite3, exceptions, time
@@ -35,17 +35,15 @@ class Parser:
 	def walk(self, d):
 		'''Walk down the file structure iteratively, gathering file names to be read in.'''
 		d = os.path.abspath(d)
-		generator = os.walk(d)
-		for folder in generator:
+		dirpath = os.walk(d)
+		for folder in dirpath:
 			for f in folder[2]: # for each file in the folder...
-				try:
-					supported = 'mp3', 'ogg', 'flac'
-					if f.split('.')[-1] in supported:
+				supported = 'mp3', 'ogg', 'flac'
+				if f.split('.')[-1] in supported:
+					try:
 						self.parse(unicode(os.path.join(folder[0], f), 'utf_8'))
-					#else:
-						#print u"Not going to bother with file " + unicode(os.path.join(folder[0], f), 'utf_8')
-				except Exception, e:
-					print e.__unicode__()
+					except Exception, e:
+						print e.__unicode__()
 		try:
 			self.db.execute_batch_insert_statement(u"INSERT INTO song VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", self.buf)
 		except Exception, e:
@@ -55,7 +53,7 @@ class Parser:
 			self.buf = [] # wipe the buffers clean so we can repeat a batch parse again.
 	
 	def parse(self, filename):
-		'''Parse the file to retrieve the information we want.
+		'''Process and parse the music file to extract desired information.
 		
 		It may be the case that, in the future, we require more information from a song than is provided at this time.
 		Examine all tags that can be retrieved from a mutagen.File object, and adjust the database's schema accordingly.'''
