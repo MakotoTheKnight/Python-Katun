@@ -16,11 +16,13 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=2
-FILE_NAME_0=0;Python;0;16;1;1;1;/home/makoto/python-katun/branches/katun-web/db_backend.py;0;4
-FILE_NAME_1=0;Python;0;16;1;1;1;/home/makoto/python-katun/branches/katun-web/parser.py;0;4
-FILE_NAME_2=1232;Python;0;16;1;1;1;/home/makoto/python-katun/branches/katun-web/web_backend.py;0;4
-FILE_NAME_3=339;Python;0;16;1;1;1;/home/makoto/python-katun/branches/katun-web/test.py;0;4
+current_page=5
+FILE_NAME_0=251;Python;0;16;1;1;1;/home/makoto/python-katun/branches/katun-web/parser.py;0;4
+FILE_NAME_1=806;Python;0;16;1;1;1;/home/makoto/python-katun/branches/katun-web/db_backend.py;0;4
+FILE_NAME_2=1085;Python;0;16;1;1;1;/home/makoto/python-katun/branches/katun-web/web_backend.py;0;4
+FILE_NAME_3=13;HTML;0;16;1;1;1;/home/makoto/python-katun/branches/katun-web/templates/index.html;0;4
+FILE_NAME_4=229;HTML;0;16;1;1;1;/home/makoto/python-katun/branches/katun-web/templates/katun_layout.html;0;4
+FILE_NAME_5=96;CSS;0;16;1;1;1;/home/makoto/python-katun/branches/katun-web/templates/katun.css;0;4
 
 [build-menu]
 PythonFT_01_LB=

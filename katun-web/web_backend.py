@@ -15,10 +15,9 @@ class Katun_Website(object):
 	def __init__(self):
 		self.interface = DatabaseInterface()
 	
-	
 	@cherrypy.expose
 	def index(self):
-		template = Template(filename="templates/katun_layout.html")
+		template = Template(filename="templates/Katun_Index.html")
 		return template.render_unicode(title="Index")
 	
 	@cherrypy.expose
