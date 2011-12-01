@@ -7,17 +7,19 @@
 import cherrypy, os, webbrowser
 from db_backend import DatabaseInterface
 from mako.template import Template
+from mako.lookup import TemplateLookup
 from parser import Parser
 
 
 class Katun_Website(object):
 	
-	def __init__(self):
+	def __init__(self, template_dir="/templates"):
 		self.interface = DatabaseInterface()
+		self.lookup = TemplateLookup(directories = [template_dir])
 	
 	@cherrypy.expose
 	def index(self):
-		template = Template(filename="templates/Katun_Index.html")
+		template = Template(filename="templates/katun_layout.html")
 		return template.render_unicode(title="Index")
 	
 	@cherrypy.expose
@@ -49,7 +51,6 @@ def main():
 			'tools.staticfile.filename': os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates/katun.css')
 		}
 	}
-	
 	cherrypy.quickstart(Katun_Website(), config=conf)
 	
 if __name__ == '__main__':

@@ -1,13 +1,13 @@
 /* K'atun CSS Stylesheet */
 
 body {
-
-
-
-
-
+	background: #DBDBDB;
 }
 
+h1 {
+	font-family: 'Amaranth', sans-serif;
+	font-size: 50px;
+}
 
 a {
 
@@ -35,9 +35,10 @@ ul {
 }
 
 #container {
-
-
-
+	width: 800px;
+	height: 100%;
+	margin: 0px auto;
+	
 }
 
 #banner {
@@ -47,12 +48,20 @@ ul {
 
 #sidebar {
 
-
+	height:100%;
+	width:125px;
+	float:left;
 }
 
 
 #content {
 
-
+	height:60%;
+	width:600px;
+	float:right;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #2F7BBB;
+	overflow: scroll;
 
 }
