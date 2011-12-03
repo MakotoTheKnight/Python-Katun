@@ -1,7 +1,8 @@
+<!DOCTYPE HTML>
 <html>
 	<head>
 		<title>K'atun :: ${title}</title>
-		<link rel="stylesheet" type='text/css' href='http://fonts.googleapis.com/css?family=Amaranth:400normal'>
+		<link rel="stylesheet" type='text/css' href='http://fonts.googleapis.com/css?family=Amaranth:400italic'>
 		<link rel="stylesheet" type="text/css" href="templates/katun.css" />
 	</head>	
 
@@ -9,24 +10,58 @@
 		<div id="container">
 			<div id="banner">
 				<h1><i>K'atun</i></h1>
+				
 			</div>
 			
 			<div id="sidebar">
-				<form method="post" action="http://"><input type="Search" value="Search" id="html-text-box"></form>
+				<div id="querybox"><form method="post" action="http://"><input type="Search" value="Query Music" id="html-text-box"></form></div>
 				<h2>Library</h2>
+				<a href="#"><p>Load Collection</p></a>
 				<ul>
 					<li>Songs</li>
 					<li>Playlists</li>
 					<li>Favorites</li>
 					<li>Duplicates</li>
 				</ul>
+				<br />
+				<h2>Statistics</h2>
+				<ul>
+					<li>Total Music Collection Size: #VAL</li>
+				</ul>
 			</div>
 
 			<div id="content">
-				<table><tr><td>1</td><td>2</td></tr></table>
+				<table id="results">
+					<tr>
+						<th>File Location</th>
+						<th>Artist</th>
+						<th>Filetype</th>
+						<th>Title</th>
+						<th>Genre</th>
+						<th>Track</th>
+						<th>Album</th>
+						<th>Bitrate</th>
+						<th>Date</th>
+					</tr>
+					<tr>
+						<td>I don't know</td>
+						<td>if this will even work...</td>
+						<td>if this will even work...</td>
+						<td>if this will even work...</td>
+						<td>if this will even work...</td>
+					</tr>
+					<tr class="alt">
+						<td>I don't know</td>
+						<td>if this will even work...</td>
+						<td>if this will even work...</td>
+						<td>if this will even work...</td>
+						<td>if this will even work...</td>
+					</tr>
+				
+				</table>
 			</div>
 
-				<div id="footer" style="background-color:;clear:both;text-align:center;"> </div>
+				<div id="footer"><p>Powered by CherryPy</p></div>
 			</div>
 		</div>
 	</body>

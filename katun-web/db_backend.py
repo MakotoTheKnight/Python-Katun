@@ -64,7 +64,10 @@ class DatabaseInterface:
 			raise DatabaseError(u"Incorrect method; please use either\"execute_insert_statement\" or \"execute_update_statement()\" or \"execute_delete_statement()\" instead.")
 		
 		with sqlite3.connect(self.db_path) as con:
-			con.execute(sql)
+			con.row_factory = sqlite3.Row
+			cur = con.cursor()
+			cur.execute(sql)
+			return cur.fetchall()
 
 	def execute_insert_statement(self, sql, parameters):
 		"""Execute a valid SQL insert statement using qmark notation.

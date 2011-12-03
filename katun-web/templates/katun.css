@@ -1,12 +1,21 @@
 /* K'atun CSS Stylesheet */
 
 body {
-	background: #DBDBDB;
+	background: #333333;
+	font-family: Arial; sans-serif;
+	font-size: 12px;
+	font-color: #4F4F4F;
 }
 
 h1 {
 	font-family: 'Amaranth', sans-serif;
-	font-size: 50px;
+	font-size: 47px;
+	padding-left: 15px;
+}
+
+p {
+
+	padding: 7px;
 }
 
 a {
@@ -30,38 +39,81 @@ a:hover {
 
 ul {
 
-
+	list-style-type: none;
 
 }
 
+#results {
+
+	font-family: "Times New Roman", serif;
+	width: 100%;
+	border-collapse: collapse;
+
+}
+
+#results td, #results th {
+
+	font-size: 16px;
+	border: 1px solid #183781;
+	padding: 3px 3px 3px 3px;
+
+}
+
+#results th {
+
+	font-size: 14px;
+	text-align: left;
+	padding-top: 5px;
+	padding-bottom: 4px;
+	background-color: #C2D4FF;
+	color: #4F4F4F;
+}
+
+#results tr.alt td {
+	color: #2f2f2f;
+	background-color: #B5CBFF;
+}
+
+
 #container {
-	width: 800px;
-	height: 100%;
+	width: 85%;
+	height: 70%;
 	margin: 0px auto;
+	background: #E5E5E5;
+	border-style: solid;
+	border-width: 2px;
+	border-color: #1d58be;
 	
 }
 
 #banner {
+	
+	border-style: solid;
+	border-width: 1px;
+	border-color: #6ca5c9;
+	margin-bottom: 15px;
+}
 
-
+#querybox {
 }
 
 #sidebar {
-
+	padding-left: 12px;
 	height:100%;
-	width:125px;
+	width:18%;
 	float:left;
 }
 
 
 #content {
 
-	height:60%;
-	width:600px;
-	float:right;
-	border-style: solid;
-	border-width: 1px;
-	border-color: #2F7BBB;
+	height:500px;
+	width:80%;
+	float:none;
 	overflow: scroll;
+}
+
+#footer {
+
 
 }
