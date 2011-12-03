@@ -27,7 +27,7 @@ class Parser:
 		self.buf = [] # Establish a commit buffer, so we can read the file structure efficiently and commit once.
 		self.db = DatabaseInterface(db_path)
 		
-		if startfresh:
+		if startfresh or not os.path.exists(path):
 			self.db.reset_database()		
 			
 		self.walk(path)
@@ -41,7 +41,8 @@ class Parser:
 				supported = 'mp3', 'ogg', 'flac'
 				if f.split('.')[-1] in supported:
 					try:
-						self.parse(unicode(os.path.join(folder[0], f), 'utf_8'))
+						#self.parse(unicode(os.path.join(folder[0], f), 'utf_8'))
+						self.parse(os.path.join(folder[0], f))
 					except Exception, e:
 						print e.__unicode__()
 		try:
@@ -57,7 +58,6 @@ class Parser:
 		
 		It may be the case that, in the future, we require more information from a song than is provided at this time.
 		Examine all tags that can be retrieved from a mutagen.File object, and adjust the database's schema accordingly.'''
-		
 		song = mutagen.File(filename, easy=True)
 		artist, title, genre, track, album, bitrate, year, month = '', '', '', '', '', '', '', ''
 		try:

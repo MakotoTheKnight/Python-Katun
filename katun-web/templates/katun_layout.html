@@ -13,56 +13,75 @@
 				
 			</div>
 			
-			<div id="sidebar">
-				<div id="querybox"><form method="post" action="http://"><input type="Search" value="Query Music" id="html-text-box"></form></div>
-				<h2>Library</h2>
-				<a href="#"><p>Load Collection</p></a>
-				<ul>
-					<li>Songs</li>
-					<li>Playlists</li>
-					<li>Favorites</li>
-					<li>Duplicates</li>
-				</ul>
-				<br />
-				<h2>Statistics</h2>
-				<ul>
-					<li>Total Music Collection Size: #VAL</li>
-				</ul>
-			</div>
+		<div id="sidebar">
+			<div id="querybox"><form method="post" action="http://"><input type="Search" value="Query Music" id="html-text-box"></form></div>
+			<h2>Library</h2>
+<!--
+			add a condition to load in the music_upload template here
+-->
+<!--
+			add a condition to load the links to the left, if there is an actual music collection
+-->
 
-			<div id="content">
-				<table id="results">
-					<tr>
-						<th>File Location</th>
-						<th>Artist</th>
-						<th>Filetype</th>
-						<th>Title</th>
-						<th>Genre</th>
-						<th>Track</th>
-						<th>Album</th>
-						<th>Bitrate</th>
-						<th>Date</th>
-					</tr>
-					<tr>
-						<td>I don't know</td>
-						<td>if this will even work...</td>
-						<td>if this will even work...</td>
-						<td>if this will even work...</td>
-						<td>if this will even work...</td>
-					</tr>
-					<tr class="alt">
-						<td>I don't know</td>
-						<td>if this will even work...</td>
-						<td>if this will even work...</td>
-						<td>if this will even work...</td>
-						<td>if this will even work...</td>
-					</tr>
-				
-				</table>
-			</div>
-
-				<div id="footer"><p>Powered by CherryPy</p></div>
-			</div>
+			<ul>
+				<li><a href="music">Music</a></li>
+				<li><a href="playlists">Playlists</a></li>
+				<li><a href="favorites">Favorites</a></li>
+				<li><a href="duplicates">Duplicates</a></li>
+			</ul>
+			<br />
+			
+<!--
+			add a connection to gather statistics here
+-->
+			<h2>Statistics</h2>
+			<ul>
+				<li>Total Music Collection Size:<br />#VAL</li>
+			</ul>
 		</div>
+
+		<div id="content">
+			
+			<table id="results">
+				<tr>
+					<th>File Location</th>
+					<th>Artist</th>
+					<th>Filetype</th>
+					<th>Title</th>
+					<th>Genre</th>
+					<th>Track</th>
+					<th>Album</th>
+					<th>Bitrate</th>
+					<th>Date</th>
+				</tr>
+				<tr class="odd">
+					<td>I don't know</td>
+					<td>if this will even work...</td>
+					<td>if this will even work...</td>
+					<td>if this will even work...</td>
+					<td>if this will even work...</td>
+					<td>if this will even work...</td>
+					<td>if this will even work...</td>
+					<td>if this will even work...</td>
+					<td>if this will even work...</td>
+				</tr>
+				<tr class="even">
+					<td>I don't know</td>
+					<td>if this will even work...</td>
+					<td>if this will even work...</td>
+					<td>if this will even work...</td>
+					<td>if this will even work...</td>
+					<td>if this will even work...</td>
+					<td>if this will even work...</td>
+					<td>if this will even work...</td>
+					<td>if this will even work...</td>
+				</tr>
+			
+			</table>
+		
+		</div>
+			
+
+		<div id="footer"><p>Powered by CherryPy</p></div>
 	</body>
 </html>

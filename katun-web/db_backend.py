@@ -27,6 +27,7 @@ class DatabaseInterface:
 		This operation deletes the db file associated with K'atun.'''
 		if os.path.exists(self.db_path):
 			os.remove(self.db_path)
+		
 		self.__build_database()
 
 	def __build_database(self):

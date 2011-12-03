@@ -2,7 +2,7 @@
 
 body {
 	background: #333333;
-	font-family: Arial; sans-serif;
+	font-family: Arial, sans-serif;
 	font-size: 12px;
 	font-color: #4F4F4F;
 }
@@ -11,6 +11,13 @@ h1 {
 	font-family: 'Amaranth', sans-serif;
 	font-size: 47px;
 	padding-left: 15px;
+}
+
+h2 {
+	
+	font-family:  'Times New Roman', serif;
+	font-size: 17px;
+
 }
 
 p {
@@ -46,7 +53,7 @@ ul {
 #results {
 
 	font-family: "Times New Roman", serif;
-	width: 100%;
+	width: auto;
 	border-collapse: collapse;
 
 }
@@ -66,17 +73,22 @@ ul {
 	padding-top: 5px;
 	padding-bottom: 4px;
 	background-color: #C2D4FF;
-	color: #4F4F4F;
+	color: #3E5CA4;
 }
 
-#results tr.alt td {
-	color: #2f2f2f;
+#results tr.odd td {
+	color: #0f0f0f;
 	background-color: #B5CBFF;
+}
+
+#results tr.even td {
+	color: #0f0f0f;
+	background-color: #9CBAFF;
 }
 
 
 #container {
-	width: 85%;
+	width: 90%;
 	height: 70%;
 	margin: 0px auto;
 	background: #E5E5E5;

@@ -37,6 +37,21 @@ class Katun_Website(object):
 	@cherrypy.expose
 	def favorites(self):
 		return "Hello world, inside of the FAVORITES method."
+		
+	@cherrypy.expose
+	def load_music(self, location):
+		'''Load music in from a user's local machine.
+		
+		It has to be a valid path, which we'll check in here (and subsequently raise an error or redirect).'''
+		
+		if not os.path.exists(location):
+			raise Exception(u"Bogus location") # do something with it later
+		p = Parser(location.strip())
+		del p
+		raise cherrypy.HTTPRedirect("index")
+		
+		# May God have mercy on your soul if your collection is north of 5,000.
+		
 
 def main():
 	'''main() functions are used to test the validity and performance of the module alone.

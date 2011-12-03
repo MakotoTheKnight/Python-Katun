@@ -1,0 +1,39 @@
+
+<% br = kw['bitrate'] %>
+<h3>Information for ${kw['title']}</h3>
+			<ul>
+				<li>Song Title:&nbsp; ${kw['title']}</li>
+				<li>Artist:&nbsp; ${kw['artist']}</li>
+				<li>Album:&nbsp; ${kw['album']}</li>
+				<li>Genre:&nbsp; ${kw['genre']}</li>
+				<li>Filetype:&nbsp; ${kw['filetype']}</li>
+				<li>Track Number:&nbsp; ${kw['tracknumber']}</li>
+				<li>Bit Rate (bps):&nbsp;
+				% if br == 999999: lossless
+				% else:	br
+				%endif
+				</li>
+				<li>Date:&nbsp; ${kw['date']}</li>
+				<li>Physical Location:&nbsp; ${kw['location']}</li>
+				<li>Add to favorites?</li>
+			
+			</ul>
+
+kw = {'title': "Like a Boss", 'artist': 'Slim Thug', 'album': 'Already Platinum', 'genre': 'Rap & Hip-Hop', 'filetype': 'ogg', 'tracknumber': 7, 'bitrate': 999999, 'date': '2004-07-11', 'location': '/home/makoto/Music/R/Rap&Hip-Hop/Slim Thug'}
+
+<h3>Information for Like a Boss</h3>
+			<ul>
+				<li>Song Title:&nbsp; Like a Boss</li>
+				<li>Artist:&nbsp; Slim Thug</li>
+				<li>Album:&nbsp; Already Platinum</li>
+				<li>Genre:&nbsp; Rap & Hip-Hop</li>
+				<li>Filetype:&nbsp; ogg</li>
+				<li>Track Number:&nbsp; 7</li>
+				<li>Bit Rate (bps):&nbsp;
+					lossless
+				</li>
+				<li>Date:&nbsp; 2004-07-11</li>
+				<li>Physical Location:&nbsp; /home/makoto/Music/R/Rap&Hip-Hop/Slim Thug</li>
+				<li>Add to favorites?</li>
+			
+			</ul>
