@@ -18,7 +18,7 @@ class DatabaseInterface:
 	We know where the database is stored within the file structure, but if it doesn't exist, we can re-create it here.
 	The schema with which we create and populate the database, including triggers, is defined elsewhere.'''
 
-	def __init__(self, db_path="../Katun.db"):
+	def __init__(self, db_path="../db/Katun.db"):
 		self.db_path = db_path
 
 	def reset_database(self):
@@ -135,3 +135,19 @@ class DatabaseInterface:
 				con.commit()
 			except Exception, e:
 				print e.__unicode__()
+				
+def main():
+	'''main() functions are used to test the validity and performance of the module alone.
+	This function is to NEVER be called outside of testing purposes.'''
+	try:
+		db = DatabaseInterface()
+		info = db.execute_query('select title, artist, album, genre, filetype from song;')
+		keys = info[0].keys()
+		print keys
+		for line in info:
+			print line
+		
+	except Exception, e:
+		print e.__unicode__()
+
+if __name__ == '__main__': main()

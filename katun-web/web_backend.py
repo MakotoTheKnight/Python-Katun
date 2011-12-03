@@ -17,28 +17,28 @@ class Katun_Website(object):
 		self.interface = DatabaseInterface()
 		self.lookup = TemplateLookup(directories = [template_dir])
 	
-	@cherrypy.expose
 	def index(self):
 		template = Template(filename="templates/katun_layout.html")
 		return template.render_unicode(title="Index")
+	index.exposed = True
 	
-	@cherrypy.expose
 	def music(self):
-		return "Hello world inside of the MUSIC method."
+		template = Template(filename="templates/katun_layout.html")
+		return template.render_unicode(title="Music Collection")#"Hello world inside of the MUSIC method.")
+	music.exposed = True
 	
-	@cherrypy.expose
 	def duplicates(self):
 		return "Hello world, inside of the DUPLICATES method."
+	duplicates.exposed = True
 	
-	@cherrypy.expose
 	def playlists(self):
 		return "Hello world, inside of the PLAYLISTS method."
+	playlists.exposed = True
 	
-	@cherrypy.expose
 	def favorites(self):
 		return "Hello world, inside of the FAVORITES method."
+	favorites.exposed = True
 		
-	@cherrypy.expose
 	def load_music(self, location):
 		'''Load music in from a user's local machine.
 		
@@ -49,8 +49,16 @@ class Katun_Website(object):
 		p = Parser(location.strip())
 		del p
 		raise cherrypy.HTTPRedirect("index")
+	load_music.exposed = True
 		
 		# May God have mercy on your soul if your collection is north of 5,000.
+
+class Katun_Song(object):
+	
+	def song_url(self, title, **elements):
+		'''Accept a full-blown song as a URL.'''
+		template = Template(filename="")
+		return template.render_unicode(elements)
 		
 
 def main():

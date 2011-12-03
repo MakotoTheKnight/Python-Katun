@@ -15,7 +15,6 @@ CREATE TABLE song(
 	bitrate INTEGER,
 	year TEXT,
 	entryorder INTEGER,
-	--month INTEGER,
 	PRIMARY KEY(
 		location,
 		artist,
@@ -55,7 +54,6 @@ CREATE TABLE duplicates(
 	artist TEXT,
 	filetype TEXT,
 	title TEXT,
-	--duplicate_location TEXT PRIMARY KEY,
 	FOREIGN KEY(location, artist, filetype, title) references song(location, artist, filetype, title)
 );
 
@@ -64,16 +62,6 @@ CREATE TABLE playlist(
 	uid INTEGER,
 	count INTEGER,
 	FOREIGN KEY(uid) REFERENCES user(uid)
-);
-
-CREATE TABLE album(
-	location TEXT,
-	artist TEXT,
-	filetype TEXT,
-	title TEXT,
-	album_art_filename TEXT PRIMARY KEY,
-	track_count INTEGER,
-	FOREIGN KEY(location, artist, filetype, title) references song(location, artist, filetype, title)
 );
 
 /* Triggers */
@@ -229,5 +217,7 @@ ON user (uid);
 
 CREATE INDEX SongIndex
 ON song(genre, track, album, bitrate);
+
+INSERT INTO user(uid) VALUES ('Default');
 
 COMMIT;
