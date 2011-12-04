@@ -38,8 +38,17 @@
 				</ul>
 			<br />
 			<h2>Statistics</h2>
-				<p>Give me a minute to add stats...</p>
-		
+			<%
+				size = db.execute_query("select count(distinct title) from song;")[0][0]
+				dups = db.execute_query("select count(*) from duplicates;")[0][0]
+				genre = db.execute_query("select count(distinct genre) from song;")[0][0]
+				
+			%>
+				<ul>
+					<li>Music Collection Size: <b>${size}</b></li>
+					<li>Duplicates in Collection: <b>${dups}</b></li>
+					<li>Genres in Collection: <b>${genre}</b></li>
+				</ul>
 		% else:
 			<form action="load_music" enctype="multipart/form-data/" method="post">
 			<p>Where's your music?<br />

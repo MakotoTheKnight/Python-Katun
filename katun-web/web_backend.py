@@ -63,7 +63,7 @@ class Katun_Song(object):
 	
 	def song_url(self, title, **elements):
 		'''Accept a full-blown song as a URL.'''
-		template = Template(filename="")
+		template = Template(filename="templates/song_information.html")
 		return template.render_unicode(elements)
 		
 

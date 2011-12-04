@@ -140,7 +140,7 @@ def main():
 	This function is to NEVER be called outside of testing purposes.'''
 	try:
 		db = DatabaseInterface()
-		info = db.execute_query('select title, artist, album, genre, filetype from song;')
+		info = db.execute_query('select count(distinct title) from song;')
 		keys = info[0].keys()
 		print keys
 		for line in info:
