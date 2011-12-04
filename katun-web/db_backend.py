@@ -34,11 +34,12 @@ class DatabaseInterface:
 		"""Build the database.
 		
 		This operation is valid only after reset_database() is called, otherwise, undefined behavior may occur."""
-		
-		with open('../db/tables.sql', 'r') as f:
-			with sqlite3.connect(self.db_path) as con:
+		with sqlite3.connect(self.db_path) as con:
+			with open('../db/tables.sql', 'r') as f:
 				con.executescript(f.read())
-				con.commit()
+				print "I think I executed the script"
+			con.commit()
+			print "Committed changes"
 
 	def commit(self):
 		"""A common interface for committing changes to the database.

@@ -218,6 +218,6 @@ ON user (uid);
 CREATE INDEX SongIndex
 ON song(genre, track, album, bitrate);
 
-INSERT INTO user(uid) VALUES ('Default');
+INSERT INTO user(uname) VALUES ('Default');
 
 COMMIT;

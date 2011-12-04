@@ -5,7 +5,6 @@
 # The intention of this design is to mitigate potential SQL injections into the database, causing corruption and/or data loss.
 
 import cherrypy, os, webbrowser
-from db_backend import DatabaseInterface
 from mako.template import Template
 from mako.lookup import TemplateLookup
 from parser import Parser
@@ -14,7 +13,6 @@ from parser import Parser
 class Katun_Website(object):
 	
 	def __init__(self):
-		self.interface = DatabaseInterface()
 		self.lookup = TemplateLookup(directories = ["templates"])
 	
 	def index(self):
@@ -49,9 +47,9 @@ class Katun_Website(object):
 		It has to be a valid path, which we'll check in here (and subsequently raise an error or redirect).'''
 		
 		if not os.path.exists(location):
-			raise Exception(u"Bogus location") # do something with it later
-		p = Parser(location.strip())
-		del p
+			print "it doesn't exist you knucklehead"
+			raise cherrypy.HTTPRedirect("index") # do something with it later
+		p = Parser(location.strip(), startfresh=True)
 		raise cherrypy.HTTPRedirect("index")
 	load_music.exposed = True
 	
