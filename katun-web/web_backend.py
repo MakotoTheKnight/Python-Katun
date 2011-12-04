@@ -14,31 +14,33 @@ class Katun_Website(object):
 	
 	def __init__(self):
 		self.lookup = TemplateLookup(directories = ["templates"])
+		self.template = Template(filename="templates/katun_layout.html")
 	
 	def index(self):
-		template = Template(filename="templates/katun_layout.html")
-		return template.render_unicode(title="Index")
+		with open('templates/index.html', 'r') as f:
+			return self.template.render_unicode(title="Index", content=f.read())
 	index.exposed = True
 	
 	def music(self):
-		template = Template(filename="templates/katun_layout.html")
-		return template.render_unicode(title="Music Collection")#"Hello world inside of the MUSIC method.")
+		music_template = Template(filename="templates/results_table.html").render_unicode(sql="select Title, Artist, Album, Genre, Filetype from song;")
+		
+		return self.template.render_unicode(title="Music Collection", content = music_template)#"Hello world inside of the MUSIC method.")
 	music.exposed = True
 	
 	def duplicates(self):
-		return "Hello world, inside of the DUPLICATES method."
+		return self.template.render_unicode(title="Duplicates", content = "Give me a minute.")#"Hello world inside of the MUSIC method.")
 	duplicates.exposed = True
 	
 	def playlists(self):
-		return "Hello world, inside of the PLAYLISTS method."
+		return self.template.render_unicode(title="Playlists [BETA]", content = "Give me a minute.")#"Hello world inside of the MUSIC method.")
 	playlists.exposed = True
 	
 	def favorites(self):
-		return "Hello world, inside of the FAVORITES method."
+		return self.template.render_unicode(title="Favorites", content = "Give me a minute.")#"Hello world inside of the MUSIC method.")
 	favorites.exposed = True
 	
 	def get_help(self):
-		return "RTFM"
+		return self.template.render_unicode(title="Music Collection", content = "Give me a minute.")#"Hello world inside of the MUSIC method.")
 	get_help.exposed = True
 		
 	def load_music(self, location):
@@ -47,10 +49,9 @@ class Katun_Website(object):
 		It has to be a valid path, which we'll check in here (and subsequently raise an error or redirect).'''
 		
 		if not os.path.exists(location):
-			print "it doesn't exist you knucklehead"
 			raise cherrypy.HTTPRedirect("index") # do something with it later
 		p = Parser(location.strip(), startfresh=True)
-		raise cherrypy.HTTPRedirect("index")
+		raise cherrypy.HTTPRedirect("music")
 	load_music.exposed = True
 	
 	

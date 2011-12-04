@@ -41,7 +41,6 @@ class Parser:
 				supported = 'mp3', 'ogg', 'flac'
 				if f.split('.')[-1] in supported:
 					try:
-						#self.parse(unicode(os.path.join(folder[0], f), 'utf_8'))
 						self.parse(os.path.join(folder[0], f))
 					except Exception, e:
 						print e.__unicode__()

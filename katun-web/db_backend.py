@@ -37,9 +37,7 @@ class DatabaseInterface:
 		with sqlite3.connect(self.db_path) as con:
 			with open('../db/tables.sql', 'r') as f:
 				con.executescript(f.read())
-				print "I think I executed the script"
 			con.commit()
-			print "Committed changes"
 
 	def commit(self):
 		"""A common interface for committing changes to the database.
