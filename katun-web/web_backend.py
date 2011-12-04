@@ -21,14 +21,15 @@ class Katun_Website(object):
 			return self.template.render_unicode(title="Index", content=f.read())
 	index.exposed = True
 	
-	def music(self):
-		music_template = Template(filename="templates/results_table.html").render_unicode(sql="select Title, Artist, Album, Genre, Filetype from song;")
+	def music(self, query="select title, artist, album, genre, filetype from song;"):
+		music_template = Template(filename="templates/results_table.html").render_unicode(sql=query)
 		
 		return self.template.render_unicode(title="Music Collection", content = music_template)#"Hello world inside of the MUSIC method.")
 	music.exposed = True
 	
 	def duplicates(self):
-		return self.template.render_unicode(title="Duplicates", content = "Give me a minute.")#"Hello world inside of the MUSIC method.")
+		duplicates_template = Template(filename="templates/results_table.html").render(sql="select * from duplicates;")
+		return self.template.render_unicode(title="Duplicates", content = duplicates_template)#"Hello world inside of the MUSIC method.")
 	duplicates.exposed = True
 	
 	def playlists(self):
