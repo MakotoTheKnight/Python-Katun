@@ -1,0 +1,23 @@
+<%
+	from db_backend import DatabaseInterface
+	db = DatabaseInterface()
+	data = db.execute_query(sql)
+	keys = data[0].keys()
+%>
+
+	
+	<table id="results">
+				<tr>
+					% for item in keys:
+						<th>${item}</th>
+					%endfor
+				</tr>
+				% for element in data:
+				<tr class="odd">
+					% for elem in element:
+						<td>${elem}</td>
+					%endfor
+				</tr>
+				% endfor
+	</table>	
+	

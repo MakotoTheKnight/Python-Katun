@@ -13,9 +13,9 @@ from parser import Parser
 
 class Katun_Website(object):
 	
-	def __init__(self, template_dir="/templates"):
+	def __init__(self):
 		self.interface = DatabaseInterface()
-		self.lookup = TemplateLookup(directories = [template_dir])
+		self.lookup = TemplateLookup(directories = ["templates"])
 	
 	def index(self):
 		template = Template(filename="templates/katun_layout.html")
@@ -38,6 +38,10 @@ class Katun_Website(object):
 	def favorites(self):
 		return "Hello world, inside of the FAVORITES method."
 	favorites.exposed = True
+	
+	def get_help(self):
+		return "RTFM"
+	get_help.exposed = True
 		
 	def load_music(self, location):
 		'''Load music in from a user's local machine.
@@ -50,6 +54,8 @@ class Katun_Website(object):
 		del p
 		raise cherrypy.HTTPRedirect("index")
 	load_music.exposed = True
+	
+	
 		
 		# May God have mercy on your soul if your collection is north of 5,000.
 
