@@ -24,18 +24,19 @@
 		<div id="sidebar">
 			<h2>Library</h2>
 			% if os.path.exists(db.db_path):
-				<div id="querybox"align="center">
-					<form action = "query_db" enctype="multipart/form-data/" method = "post">
-						<input type="text" name="query" size="25">
-					</form>
-				</div>
-				<ul>
-					<li><a href="music">Music</a></li>
-					<li><a href="playlists">Playlists</a></li>
-					<li><a href="favorites">Favorites</a></li>
-					<li><a href="duplicates">Duplicates</a></li>
-					<li><a href="get_help">Help</a></li>
-				</ul>
+				<p>Run any valid SQL query on your collection here.</p>
+			<div id="querybox"align="center">
+				<form action = "query_db" enctype="multipart/form-data/" method = "post">
+					<input type="text" name="query" size="25">
+				</form>
+			</div>
+			<ul>
+				<li><a href="music">Music</a></li>
+				<li><a href="playlists">Playlists</a></li>
+				<li><a href="favorites">Favorites</a></li>
+				<li><a href="duplicates">Duplicates</a></li>
+				<li><a href="get_help">Help</a></li>
+			</ul>
 			<br />
 			<h2>Statistics</h2>
 			<%

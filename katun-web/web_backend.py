@@ -30,8 +30,11 @@ class Katun_Website(object):
 	
 	@cherrypy.expose
 	def duplicates(self):
-		duplicates_template = Template(filename="templates/results_table.html").render_unicode(sql="select * from duplicates;")
-		return self.template.render_unicode(title="Duplicates", content = duplicates_template)
+		try:
+			duplicates_template = Template(filename="templates/results_table.html").render_unicode(sql="select * from duplicates;")
+			return self.template.render_unicode(title="Duplicates", content = duplicates_template)
+		except:
+			return self.template.render_unicode(title="Duplicates", content = "You don't have any duplicates in your music collection!  Lucky you!")
 	
 	@cherrypy.expose
 	def playlists(self):
@@ -50,8 +53,11 @@ class Katun_Website(object):
 	
 	@cherrypy.expose
 	def favorites(self):
-		favorites_template = Template(filename="templates/results_table.html").render_unicode(sql="select * from favorites;")
-		return self.template.render_unicode(title="Favorites", content = favorites_template)
+		try:
+			favorites_template = Template(filename="templates/results_table.html").render_unicode(sql="select * from favorites;")
+			return self.template.render_unicode(title="Favorites", content = favorites_template)
+		except:
+			return self.template.render_unicode(title="Favorites", content = "No favorites added yet.  If you want to add them, you have to click on the individual song.")
 	
 	@cherrypy.expose
 	def get_help(self):
@@ -96,7 +102,7 @@ class Katun_Website(object):
 	@cherrypy.expose
 	def query_playlist(self, pname):
 		try:
-			favorites_template = Template(filename="templates/results_table.html").render_unicode(sql="select * from contains where pname = \"" + pname + "\";")
+			favorites_template = Template(filename="templates/results_table.html").render_unicode(sql="select title, artist from contains where pname = \"" + pname + "\";")
 			return self.template.render_unicode(title="Playlist " + pname, content = favorites_template)
 		except:
 			return self.template.render_unicode(title="Error", content = "This playlist doesn't have any elements inserted into it.")
