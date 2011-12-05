@@ -47,9 +47,12 @@ class Katun_Website(object):
 	
 	def song(self, location):
 		"""Retrieve the song from the database by its entryorder.  This is guaranteed to be a unique value."""
-		#db = DatabaseInterface()
-		#song = db.execute_query("select * from song where entryorder = " + entryorder +  ";")
-		return location
+		location = unicode(location)
+		db = DatabaseInterface()
+		song = db.execute_query("select * from song where location = \"" + location +  "\";")
+		results = dict(zip(song[0].keys(), song[0]))
+		song_info = Template(filename="templates/song_information.html").render_unicode(kw=results)
+		return self.template.render_unicode(title="Song Information", content=song_info)
 	song.exposed = True
 		
 	def load_music(self, location):

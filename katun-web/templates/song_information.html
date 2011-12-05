@@ -7,13 +7,15 @@
 				<li>Album:&nbsp; ${kw['album']}</li>
 				<li>Genre:&nbsp; ${kw['genre']}</li>
 				<li>Filetype:&nbsp; ${kw['filetype']}</li>
-				<li>Track Number:&nbsp; ${kw['tracknumber']}</li>
+				<li>Track Number:&nbsp; ${kw['track']}</li>
 				<li>Bit Rate (bps):&nbsp;
-				% if br == 999999: lossless
-				% else:	br
+				% if br == 999999:
+					lossless
+				% else:
+					${kw['bitrate']}
 				%endif
 				</li>
-				<li>Date:&nbsp; ${kw['date']}</li>
+				<li>Date:&nbsp; ${kw['year']}</li>
 				<li>Physical Location:&nbsp; ${kw['location']}</li>
 				<li>Add to favorites?</li>
 			

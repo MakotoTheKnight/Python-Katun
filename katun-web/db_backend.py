@@ -57,7 +57,8 @@ class DatabaseInterface:
 		We first check to see if it is valid SQL, and if it isn't, we pass through a sqlite3.Error which is to be handled from the caller.
 		Upon successful validation, we execute the statement.  If an error occurs, we pass the error back to the caller."""
 		
-		if not sqlite3.complete_statement(sql):
+		
+		if not sqlite3.complete_statement(sql.encode('utf_8')):
 			raise DatabaseError(u"The statement you provided isn't valid SQL.")
 		
 		if "update" in sql or "delete" in sql or "insert" in sql:
@@ -138,18 +139,11 @@ class DatabaseInterface:
 def main():
 	'''main() functions are used to test the validity and performance of the module alone.
 	This function is to NEVER be called outside of testing purposes.'''
-	try:
-		db = DatabaseInterface()
-		info = db.execute_query('select title, genre, entryorder from song;')
-		print len(info)
-		song = db.execute_query("select * from song where entryorder = '1322985563.22';")
-		print song
-		results = dict(zip(song[0].keys(), song[0]))
-		print results
-		
-		
-		
-	except Exception, e:
-		print e.__unicode__()
+	
+	db = DatabaseInterface()
+	l = u"/home/makoto/Desktop/test/田中理恵/Raison d'être/01 Raison d'être.ogg"
+	song = db.execute_query(u"select * from song where location=\"" + l + "\";")
+	results = dict(zip(song[0].keys(), song[0]))
+	print results
 
 if __name__ == '__main__': main()
