@@ -1,0 +1,29 @@
+<%
+	from db_backend import DatabaseInterface
+	db = DatabaseInterface()
+	data = db.execute_query(sql)
+	keys = data[0].keys()
+%>
+	<p>Add another playlist here:</p>
+	<form action = "create_playlist" enctype="multipart/form-data/" method = "post">
+		<input type="text" name="name" size="60">
+	</form>
+	&nbsp;
+	&nbsp;
+	&nbsp;
+	&nbsp;
+	
+	<table id="results">
+		<tr>
+			<th>${keys[0]}</th>
+			<th>${keys[1]}</th>
+			<th>${keys[2]}</th>
+		</tr>
+		% for element in data:
+		<tr class="odd">
+			<td><a href="query_playlist?pname=${element[0]}">${element[0]}</a></td>
+			<td>${element[1]}</td>
+			<td>${element[2]}</td>
+		</tr>
+		% endfor
+	</table>	

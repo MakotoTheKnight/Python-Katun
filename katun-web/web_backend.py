@@ -31,21 +31,32 @@ class Katun_Website(object):
 	@cherrypy.expose
 	def duplicates(self):
 		duplicates_template = Template(filename="templates/results_table.html").render_unicode(sql="select * from duplicates;")
-		return self.template.render_unicode(title="Duplicates", content = duplicates_template)#"Hello world inside of the MUSIC method.")
+		return self.template.render_unicode(title="Duplicates", content = duplicates_template)
 	
 	@cherrypy.expose
 	def playlists(self):
-		return self.template.render_unicode(title="Playlists [BETA]", content = "Give me a minute.")#"Hello world inside of the MUSIC method.")
+		try:
+			playlist_template = Template(filename="templates/playlist_table.html").render_unicode(sql="select * from playlist;")
+			return self.template.render_unicode(title="Playlists [BETA]", content = playlist_template)
+		except:
+			return self.template.render_unicode(title="Playlists [BETA]", content = """
+			
+			You haven't created any playlists yet.
+			<form action = "create_playlist" enctype="multipart/form-data/" method = "post">
+				<input type="text" name="name" size="60">
+			</form>
+			
+			""")
 	
 	@cherrypy.expose
 	def favorites(self):
 		favorites_template = Template(filename="templates/results_table.html").render_unicode(sql="select * from favorites;")
-		return self.template.render_unicode(title="Favorites", content = favorites_template)#"Hello world inside of the MUSIC method.")
+		return self.template.render_unicode(title="Favorites", content = favorites_template)
 	
 	@cherrypy.expose
 	def get_help(self):
 		help_template = Template(filename="templates/help.html").render_unicode()
-		return self.template.render_unicode(title="Help", content = help_template)#"Hello world inside of the MUSIC method.")
+		return self.template.render_unicode(title="Help", content = help_template)
 	
 	@cherrypy.expose
 	def song(self, location):
@@ -79,13 +90,35 @@ class Katun_Website(object):
 	def create_playlist(self, name):
 		db = DatabaseInterface()
 		params = (name, 1, None)
-		db.execute_insert_statement("insert into playlists(pname, uid, count) VALUES (?, ?, ?)", params)
-		raise cherrypy.HTTPRedirect("playlist")
+		db.execute_insert_statement("insert into playlist(pname, uid, count) VALUES (?, ?, ?)", params)
+		raise cherrypy.HTTPRedirect("playlists")
+		
+	@cherrypy.expose
+	def query_playlist(self, pname):
+		try:
+			favorites_template = Template(filename="templates/results_table.html").render_unicode(sql="select * from contains where pname = \"" + pname + "\";")
+			return self.template.render_unicode(title="Playlist " + pname, content = favorites_template)
+		except:
+			return self.template.render_unicode(title="Error", content = "This playlist doesn't have any elements inserted into it.")
+	
+	@cherrypy.expose
+	def add_to_playlist(self, pname, location, artist, filetype, title):
+		params = (pname, location, artist, filetype, title)
+		db = DatabaseInterface()
+		try:
+			db.execute_insert_statement("insert into contains (pname, location, artist, filetype, title) VALUES (?, ?, ?, ?, ?)", params)
+		except:
+			pass
+		finally:
+			raise cherrypy.HTTPRedirect(u"song?location=" + location)
 		
 	@cherrypy.expose
 	def query_db(self, query):
-		query_template = Template(filename="templates/results_table.html").render_unicode(sql=query)
-		return self.template.render_unicode(title="Query Results", content=query_template)
+		try:
+			query_template = Template(filename="templates/results_table.html").render_unicode(sql=query)
+			return self.template.render_unicode(title="Query Results", content=query_template)
+		except:
+			return self.template.render_unicode(title="Query Results", content="Invalid query, please try again.")
 
 
 def main():
