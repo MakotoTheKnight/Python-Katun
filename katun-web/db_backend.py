@@ -140,11 +140,14 @@ def main():
 	This function is to NEVER be called outside of testing purposes.'''
 	try:
 		db = DatabaseInterface()
-		info = db.execute_query('select count(distinct title) from song;')
-		keys = info[0].keys()
-		print keys
-		for line in info:
-			print line
+		info = db.execute_query('select title, genre, entryorder from song;')
+		print len(info)
+		song = db.execute_query("select * from song where entryorder = '1322985563.22';")
+		print song
+		results = dict(zip(song[0].keys(), song[0]))
+		print results
+		
+		
 		
 	except Exception, e:
 		print e.__unicode__()

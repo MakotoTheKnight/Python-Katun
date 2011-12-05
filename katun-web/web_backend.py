@@ -8,6 +8,7 @@ import cherrypy, os, webbrowser
 from mako.template import Template
 from mako.lookup import TemplateLookup
 from parser import Parser
+from db_backend import DatabaseInterface
 
 
 class Katun_Website(object):
@@ -21,8 +22,8 @@ class Katun_Website(object):
 			return self.template.render_unicode(title="Index", content=f.read())
 	index.exposed = True
 	
-	def music(self, query="select title, artist, album, genre, filetype from song;"):
-		music_template = Template(filename="templates/results_table.html").render_unicode(sql=query)
+	def music(self, query="select title, artist, album, genre, filetype, location from song;"):
+		music_template = Template(filename="templates/music_table.html").render_unicode(sql=query)
 		
 		return self.template.render_unicode(title="Music Collection", content = music_template)#"Hello world inside of the MUSIC method.")
 	music.exposed = True
@@ -43,6 +44,13 @@ class Katun_Website(object):
 	def get_help(self):
 		return self.template.render_unicode(title="Music Collection", content = "Give me a minute.")#"Hello world inside of the MUSIC method.")
 	get_help.exposed = True
+	
+	def song(self, location):
+		"""Retrieve the song from the database by its entryorder.  This is guaranteed to be a unique value."""
+		#db = DatabaseInterface()
+		#song = db.execute_query("select * from song where entryorder = " + entryorder +  ";")
+		return location
+	song.exposed = True
 		
 	def load_music(self, location):
 		'''Load music in from a user's local machine.
@@ -54,18 +62,7 @@ class Katun_Website(object):
 		p = Parser(location.strip(), startfresh=True)
 		raise cherrypy.HTTPRedirect("music")
 	load_music.exposed = True
-	
-	
-		
-		# May God have mercy on your soul if your collection is north of 5,000.
 
-class Katun_Song(object):
-	
-	def song_url(self, title, **elements):
-		'''Accept a full-blown song as a URL.'''
-		template = Template(filename="templates/song_information.html")
-		return template.render_unicode(elements)
-		
 
 def main():
 	'''main() functions are used to test the validity and performance of the module alone.
