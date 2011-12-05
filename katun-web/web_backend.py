@@ -17,34 +17,37 @@ class Katun_Website(object):
 		self.lookup = TemplateLookup(directories = ["templates"])
 		self.template = Template(filename="templates/katun_layout.html")
 	
+	@cherrypy.expose
 	def index(self):
 		with open('templates/index.html', 'r') as f:
 			return self.template.render_unicode(title="Index", content=f.read())
-	index.exposed = True
 	
+	@cherrypy.expose
 	def music(self, query="select title, artist, album, genre, filetype, location from song;"):
 		music_template = Template(filename="templates/music_table.html").render_unicode(sql=query)
 		
 		return self.template.render_unicode(title="Music Collection", content = music_template)#"Hello world inside of the MUSIC method.")
-	music.exposed = True
 	
+	@cherrypy.expose
 	def duplicates(self):
-		duplicates_template = Template(filename="templates/results_table.html").render(sql="select * from duplicates;")
+		duplicates_template = Template(filename="templates/results_table.html").render_unicode(sql="select * from duplicates;")
 		return self.template.render_unicode(title="Duplicates", content = duplicates_template)#"Hello world inside of the MUSIC method.")
-	duplicates.exposed = True
 	
+	@cherrypy.expose
 	def playlists(self):
 		return self.template.render_unicode(title="Playlists [BETA]", content = "Give me a minute.")#"Hello world inside of the MUSIC method.")
-	playlists.exposed = True
 	
+	@cherrypy.expose
 	def favorites(self):
-		return self.template.render_unicode(title="Favorites", content = "Give me a minute.")#"Hello world inside of the MUSIC method.")
-	favorites.exposed = True
+		favorites_template = Template(filename="templates/results_table.html").render_unicode(sql="select * from favorites;")
+		return self.template.render_unicode(title="Favorites", content = favorites_template)#"Hello world inside of the MUSIC method.")
 	
+	@cherrypy.expose
 	def get_help(self):
-		return self.template.render_unicode(title="Music Collection", content = "Give me a minute.")#"Hello world inside of the MUSIC method.")
-	get_help.exposed = True
+		help_template = Template(filename="templates/help.html").render_unicode()
+		return self.template.render_unicode(title="Help", content = help_template)#"Hello world inside of the MUSIC method.")
 	
+	@cherrypy.expose
 	def song(self, location):
 		"""Retrieve the song from the database by its entryorder.  This is guaranteed to be a unique value."""
 		location = unicode(location)
@@ -53,8 +56,8 @@ class Katun_Website(object):
 		results = dict(zip(song[0].keys(), song[0]))
 		song_info = Template(filename="templates/song_information.html").render_unicode(kw=results)
 		return self.template.render_unicode(title="Song Information", content=song_info)
-	song.exposed = True
-		
+
+	@cherrypy.expose
 	def load_music(self, location):
 		'''Load music in from a user's local machine.
 		
@@ -64,7 +67,25 @@ class Katun_Website(object):
 			raise cherrypy.HTTPRedirect("index") # do something with it later
 		p = Parser(location.strip(), startfresh=True)
 		raise cherrypy.HTTPRedirect("music")
-	load_music.exposed = True
+		
+	@cherrypy.expose
+	def add_favorite(self, location, artist, filetype, title):
+		db = DatabaseInterface()
+		params = (1, location, artist, filetype, title)
+		db.execute_insert_statement("insert into favorites(uid, location, artist, filetype, title) VALUES (?, ?, ?, ?, ?)", params)
+		raise cherrypy.HTTPRedirect(u"song?location=" + location)
+	
+	@cherrypy.expose	
+	def create_playlist(self, name):
+		db = DatabaseInterface()
+		params = (name, 1, None)
+		db.execute_insert_statement("insert into playlists(pname, uid, count) VALUES (?, ?, ?)", params)
+		raise cherrypy.HTTPRedirect("playlist")
+		
+	@cherrypy.expose
+	def query_db(self, query):
+		query_template = Template(filename="templates/results_table.html").render_unicode(sql=query)
+		return self.template.render_unicode(title="Query Results", content=query_template)
 
 
 def main():

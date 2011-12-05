@@ -25,8 +25,8 @@
 			<h2>Library</h2>
 			% if os.path.exists(db.db_path):
 				<div id="querybox"align="center">
-					<form method = "post" action = "query_db">
-						<input type="search" value="Execute a Query" id="user_query" width="400">
+					<form action = "query_db" enctype="multipart/form-data/" method = "post">
+						<input type="text" name="query" size="25">
 					</form>
 				</div>
 				<ul>

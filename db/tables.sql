@@ -1,7 +1,7 @@
 /* Specify foreign keys to be ON in order for them to work properly. */
 
-PRAGMA foreign_keys=ON;
 BEGIN TRANSACTION;
+PRAGMA foreign_keys=ON;
 
 /* Schemas */
 CREATE TABLE song(

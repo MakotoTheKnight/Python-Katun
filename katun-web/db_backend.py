@@ -37,6 +37,7 @@ class DatabaseInterface:
 		with sqlite3.connect(self.db_path) as con:
 			with open('../db/tables.sql', 'r') as f:
 				con.executescript(f.read())
+			con.execute("pragma foreign_keys = on;")
 			con.commit()
 
 	def commit(self):
