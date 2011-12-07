@@ -62,7 +62,7 @@ class DatabaseInterface:
 		if not sqlite3.complete_statement(sql.encode('utf_8')):
 			raise DatabaseError(u"The statement you provided isn't valid SQL.")
 		
-		if "update" in sql or "delete" in sql or "insert" in sql:
+		if "update" in sql or "drop" in sql or "insert" in sql:
 			raise DatabaseError(u"Incorrect method; please use either\"execute_insert_statement\" or \"execute_update_statement()\" or \"execute_delete_statement()\" instead.")
 		
 		with sqlite3.connect(self.db_path) as con:

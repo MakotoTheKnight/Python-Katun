@@ -19,17 +19,20 @@ class Katun_Website(object):
 	
 	@cherrypy.expose
 	def index(self):
+		'''Control the index page.'''
 		with open('templates/index.html', 'r') as f:
 			return self.template.render_unicode(title="Index", content=f.read())
 	
 	@cherrypy.expose
 	def music(self, query="select title, artist, album, genre, filetype, location from song;"):
+		'''Control the main Music layout page.'''
 		music_template = Template(filename="templates/music_table.html").render_unicode(sql=query)
 		
 		return self.template.render_unicode(title="Music Collection", content = music_template)#"Hello world inside of the MUSIC method.")
 	
 	@cherrypy.expose
 	def duplicates(self):
+		'''Control the main Duplicates layout page.'''
 		try:
 			duplicates_template = Template(filename="templates/results_table.html").render_unicode(sql="select * from duplicates;")
 			return self.template.render_unicode(title="Duplicates", content = duplicates_template)
@@ -38,6 +41,7 @@ class Katun_Website(object):
 	
 	@cherrypy.expose
 	def playlists(self):
+		'''Control the main Playlists layout page.'''
 		try:
 			playlist_template = Template(filename="templates/playlist_table.html").render_unicode(sql="select * from playlist;")
 			return self.template.render_unicode(title="Playlists [BETA]", content = playlist_template)
@@ -53,6 +57,7 @@ class Katun_Website(object):
 	
 	@cherrypy.expose
 	def favorites(self):
+		'''Control the main Favorites layout page.'''
 		try:
 			favorites_template = Template(filename="templates/results_table.html").render_unicode(sql="select * from favorites;")
 			return self.template.render_unicode(title="Favorites", content = favorites_template)
@@ -61,12 +66,13 @@ class Katun_Website(object):
 	
 	@cherrypy.expose
 	def get_help(self):
+		'''Control the main help page.'''
 		help_template = Template(filename="templates/help.html").render_unicode()
 		return self.template.render_unicode(title="Help", content = help_template)
 	
 	@cherrypy.expose
 	def song(self, location):
-		"""Retrieve the song from the database by its entryorder.  This is guaranteed to be a unique value."""
+		"""Retrieve the song from the database by its physical location."""
 		location = unicode(location)
 		db = DatabaseInterface()
 		song = db.execute_query("select * from song where location = \"" + location +  "\";")
@@ -87,6 +93,7 @@ class Katun_Website(object):
 		
 	@cherrypy.expose
 	def add_favorite(self, location, artist, filetype, title):
+		'''Insert a new favorite into the database.'''
 		db = DatabaseInterface()
 		params = (1, location, artist, filetype, title)
 		db.execute_insert_statement("insert into favorites(uid, location, artist, filetype, title) VALUES (?, ?, ?, ?, ?)", params)
@@ -94,6 +101,7 @@ class Katun_Website(object):
 	
 	@cherrypy.expose	
 	def create_playlist(self, name):
+		'''Create a playlist and insert it into the database.'''
 		db = DatabaseInterface()
 		params = (name, 1, None)
 		db.execute_insert_statement("insert into playlist(pname, uid, count) VALUES (?, ?, ?)", params)
@@ -101,6 +109,7 @@ class Katun_Website(object):
 		
 	@cherrypy.expose
 	def query_playlist(self, pname):
+		'''Retrieve elements of a playlist by its name.'''
 		try:
 			favorites_template = Template(filename="templates/results_table.html").render_unicode(sql="select title, artist from contains where pname = \"" + pname + "\";")
 			return self.template.render_unicode(title="Playlist " + pname, content = favorites_template)
@@ -109,6 +118,7 @@ class Katun_Website(object):
 	
 	@cherrypy.expose
 	def add_to_playlist(self, pname, location, artist, filetype, title):
+		'''Insert an individual song into a playlist.'''
 		params = (pname, location, artist, filetype, title)
 		db = DatabaseInterface()
 		try:
@@ -120,6 +130,7 @@ class Katun_Website(object):
 		
 	@cherrypy.expose
 	def query_db(self, query):
+		'''Run a query on the database (select statements only).'''
 		try:
 			query_template = Template(filename="templates/results_table.html").render_unicode(sql=query)
 			return self.template.render_unicode(title="Query Results", content=query_template)
