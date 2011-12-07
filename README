@@ -1,0 +1,33 @@
+K'atun version 12.19.18.17.0 [Yoaltecuhtli]
+
+---
+
+HOW TO INSTALL
+---
+
+You must have the following software installed:
+
+- Python 2.7.3 (http://www.python.org)
+- SQLite 3.7.4 or newer (sqlite.org)
+- Python SQLite bindings (http://code.google.com/p/pysqlite/)
+
+WHAT WORKS
+---
+
+- Website
+- Retrieving data from user's computer
+- Playlists and Favorites
+
+WHAT DOESN'T WORK
+---
+
+- Tag editing
+- Binding with MusicBrainz (slated for next release)
+
+KNOWN BUGS
+---
+
+- Parser is incredibly slow on sufficiently large music collections, likely north of 5,000.  This is being looked into.
+
+SQLITE3-RELATED:
+- A song can appear twice on the same playlist, or in favorites.  This issue is likely due to Python's implementation of Sqlite3 not respecting the PRAGMA foreign_keys.  This is being looked into.
