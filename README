@@ -11,6 +11,11 @@ You must have the following software installed:
 - SQLite 3.7.4 or newer (sqlite.org)
 - Python SQLite bindings (http://code.google.com/p/pysqlite/)
 
+HOW TO OPERATE
+---
+
+With Python, execute web_backend.py and then navigate to 0.0.0.0:8080.
+
 WHAT WORKS
 ---
 
