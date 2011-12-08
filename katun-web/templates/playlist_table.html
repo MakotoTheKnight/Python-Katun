@@ -1,4 +1,5 @@
 <%
+	## Retrieve a database hook specific to playlists.
 	from db_backend import DatabaseInterface
 	db = DatabaseInterface()
 	data = db.execute_query(sql)

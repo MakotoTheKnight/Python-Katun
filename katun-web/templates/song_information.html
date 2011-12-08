@@ -1,4 +1,6 @@
 <%
+	## Initialize a database hook specific to playlists and retrieve the data.
+	## kw is a dictionary of values about the song being passed in through a call.
 	from db_backend import DatabaseInterface
 	db = DatabaseInterface()
 	data = db.execute_query("select pname from playlist;")
@@ -13,6 +15,7 @@
 				<li>Track Number:&nbsp; ${kw['track']}</li>
 				<li>Bit Rate (bps):&nbsp;
 				% if kw['bitrate'] == 999999:
+					## This is a lossless file, so label it as such.
 					lossless
 				% else:
 					${kw['bitrate']}

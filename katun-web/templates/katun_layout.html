@@ -1,6 +1,8 @@
 ## -*- coding: utf-8 -*-
 
 <%
+	## Import a database hook, as well as information from the operating system to determine if we can
+	## display upload request information or database information.
 	import os
 	from db_backend import DatabaseInterface
 	db = DatabaseInterface()
@@ -9,6 +11,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
+		## title and content are variables that are passed through to this template.
 		<title>K'atun :: ${title}</title>
 		<link rel="stylesheet" type='text/css' href='http://fonts.googleapis.com/css?family=Amaranth:400italic'>
 		<link rel="stylesheet" type="text/css" href="templates/katun.css" />
@@ -18,7 +21,6 @@
 		<div id="container">
 			<div id="banner">
 				<h1><i>K'atun</i></h1>
-				
 			</div>
 			
 		<div id="sidebar">
@@ -40,6 +42,7 @@
 			<br />
 			<h2>Statistics</h2>
 			<%
+				## Extract statistics from the database.
 				size = db.execute_query("select count(distinct title) from song;")[0][0]
 				dups = db.execute_query("select count(*) from duplicates;")[0][0]
 				genre = db.execute_query("select count(distinct genre) from song;")[0][0]
