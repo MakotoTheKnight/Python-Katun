@@ -26,6 +26,7 @@ version_string = ".".join(map(str, version))
 
 import warnings
 
+import katun_backend.mutagen as mutagen
 import mutagen._util
 
 class Metadata(object):

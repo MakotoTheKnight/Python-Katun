@@ -5,6 +5,7 @@
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
 
 import sys
+from katun_backend import parser
 
 
 py3k = getattr(sys, 'py3kwarning', False) or sys.version_info >= (3, 0)
@@ -13,14 +14,14 @@ jython = sys.platform.startswith('java')
 win32 = sys.platform.startswith('win')
 
 if py3k:
-    from io import StringIO
+    pass
 else:
     try:
         from cStringIO import StringIO
     except:
         from StringIO import StringIO
 
-import codecs, re, weakref, os, time, operator
+import codecs, re, os, time, operator
 import collections
 
 try:
@@ -217,7 +218,6 @@ def parse_encoding(fp):
         m = _PYTHON_MAGIC_COMMENT_re.match(line1.decode('ascii', 'ignore'))
         if not m:
             try:
-                import parser
                 parser.suite(line1.decode('ascii', 'ignore'))
             except (ImportError, SyntaxError):
                 # Either it's a real syntax error, in which case the source

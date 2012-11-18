@@ -3,8 +3,8 @@
 # K'atun MP3/Ogg Vorbis Parser
 # This library is designated to parse the files from a user's library.
 
-import lib.mutagen as mutagen, os, sqlite3, exceptions, time
-from db_backend import DatabaseInterface
+import mutagen, os, time
+from katun_backend.db_backend import DatabaseInterface
 
 __all__ = ['InvalidSongException', 'Parser']
 

@@ -4,11 +4,11 @@
 # This backend acts as an intermediary between the database and the end user, allowing for safe operations on the database.
 # The intention of this design is to mitigate potential SQL injections into the database, causing corruption and/or data loss.
 
-import cherrypy, os, webbrowser
+import cherrypy, os
 from mako.template import Template
 from mako.lookup import TemplateLookup
-from parser import Parser
-from db_backend import DatabaseInterface
+from katun_backend.parser import Parser
+from katun_backend.db_backend import DatabaseInterface
 
 
 class Katun_Website(object):
@@ -155,3 +155,44 @@ def main():
 	
 if __name__ == '__main__':
 	main()
+
+
+#! /usr/bin/env python
+
+'Example errors caught by PyChecker'
+
+import string
+
+metaslash = 1
+
+def printNames():
+    neal = 'neal'
+    michelle = 'michele'
+    eric = 5
+    print "Local values: %(neal)S %(michele)s %(eric)" % locals()
+
+
+class Nothing:
+    def printValue(value):
+        print value
+
+    def set(self, value):
+        self.value = value
+
+
+def tryToDoSomething(self, value):
+    try:
+        import string
+
+        if not value:
+            raise RuntimeError, "Hey, there's no value"
+        printNames('a, b, c')
+    except:
+        traceback.print_exc()
+
+
+def setGlobal(value=None):
+    print 'Old MetaSlash value is:', metaslash
+    metaslash = value
+    useless = Nothing(5)
+    print 'a useless value is:', useless.valeu
