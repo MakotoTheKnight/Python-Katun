@@ -2,5 +2,4 @@
 *.db
 *.jar
 *.txt
-out/*
-.idea/*
+out/
