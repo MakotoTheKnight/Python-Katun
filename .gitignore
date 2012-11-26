@@ -3,3 +3,5 @@
 *.jar
 *.txt
 out/
+.idea/
+*.pyc
