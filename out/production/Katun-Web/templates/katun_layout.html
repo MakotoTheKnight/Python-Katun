@@ -1,0 +1,37 @@
+## -*- coding: utf-8 -*-
+
+<%
+    ## Import a database hook, as well as information from the operating system to determine if we can
+    ## display upload request information or database information.
+    import os
+    from db_backend import DatabaseInterface
+    db = DatabaseInterface()
+%>
+
+<!DOCTYPE HTML>
+<html>
+    <head>
+        ## title and content are variables that are passed through to this template.
+        <title>K'atun :: ${title}</title>
+        <link rel="stylesheet" type='text/css' href='http://fonts.googleapis.com/css?family=Amaranth:400italic'>
+        <link rel="stylesheet" type="text/css" href="templates/katun.css"/>
+    </head>
+
+    <body>
+    <div id="container">
+        <div id="banner">
+            <h1><i>K'atun</i></h1>
+        </div>
+
+        
+
+        <div id="content">
+            ${content}
+        </div>
+
+
+        <div id="footer">
+            <p>Powered by <a href="http://www.cherrypy.org">CherryPy</a></p>
+        </div>
+    </body>
+</html>
