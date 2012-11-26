@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/katun_backend/Katun-Backend.iml" filepath="$PROJECT_DIR$/katun_backend/Katun-Backend.iml" />
-      <module fileurl="file://$PROJECT_DIR$/katun_libraries/Katun-Libraries.iml" filepath="$PROJECT_DIR$/katun_libraries/Katun-Libraries.iml" />
       <module fileurl="file://$PROJECT_DIR$/katun_web/Katun-Web.iml" filepath="$PROJECT_DIR$/katun_web/Katun-Web.iml" />
     </modules>
   </component>
