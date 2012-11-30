@@ -4,7 +4,7 @@
 # This library is designated to parse the files from a user's library.
 
 import mutagen, os, time
-from service.db_backend import DatabaseInterface
+from db_backend import DatabaseInterface
 
 __all__ = ['InvalidSongException', 'Parser']
 
