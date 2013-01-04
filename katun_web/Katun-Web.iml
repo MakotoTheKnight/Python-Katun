@@ -2,7 +2,7 @@
 <module type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="Python" name="Python">
-      <configuration sdkName="Python 2.7.3 (/usr/bin/python2.7)" />
+      <configuration sdkName="Python 2.7.3 virtualenv at ~/Python-Katun/lib" />
     </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="false">
@@ -13,10 +13,9 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/web" isTestSource="false" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Python 2.7.3 virtualenv at ~/Python-Katun/lib" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Katun-Backend" exported="" />
-    <orderEntry type="library" exported="" name="Python 2.7.3 (/usr/bin/python2.7) interpreter library" level="application" />
   </component>
 </module>
 
