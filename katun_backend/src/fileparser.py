@@ -1,7 +1,5 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-# K'atun MP3/Ogg Vorbis Parser
-# This library is designated to parse the files from a user's library.
 
 import mutagen, os, time
 from db_backend import DatabaseInterface
@@ -22,9 +20,7 @@ class Parser:
      the location and filetype of the song trivially; however, if artist and title do not exist, then we
      cannot parse the song.'''
 
-    def __init__(self, path, db_path="db/Katun.db", startfresh=False):
-        '''Accept a path to the music directory and (optionally) the database.
-          Unless otherwise specified in another document, the database should exist in the ../db folder.'''
+    def __init__(self):
         self.buf = [] # Establish a commit buffer, so we can read the file structure efficiently and commit once.
         self.db = DatabaseInterface(db_path)
 
@@ -34,7 +30,6 @@ class Parser:
 
 
     def walk(self, d):
-        '''Walk down the file structure iteratively, gathering file names to be read in.'''
         d = os.path.abspath(d)
         dirpath = os.walk(d)
         for folder in dirpath:
@@ -51,14 +46,10 @@ class Parser:
             print e.__unicode__()
         finally:
             del self.buf
-            self.buf = [] # wipe the buffers clean so we can repeat a batch parse again.
+            self.buf = []
 
 
     def parse(self, filename):
-        '''Process and parse the music file to extract desired information.
-
-             It may be the case that, in the future, we require more information from a song than is provided at this time.
-             Examine all tags that can be retrieved from a mutagen.File object, and adjust the database's schema accordingly.'''
         song = mutagen.File(filename, easy=True)
         artist, title, genre, track, album, bitrate, year, month = '', '', '', '', '', '', '', ''
         try:
