@@ -1,7 +1,7 @@
 <%
 	## Initialize a database hook specific to playlists and retrieve the data.
 	## kw is a dictionary of values about the song being passed in through a call.
-	from db_backend import DatabaseInterface
+	from db_backend import BackendDatabaseInterface
 	db = DatabaseInterface()
 	data = db.execute_query("select pname from playlist;")
 %>

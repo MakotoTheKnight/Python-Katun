@@ -1,6 +1,6 @@
 <%
 	## Initialize a generic database hook and display any type of result.
-	from db_backend import DatabaseInterface
+	from db_backend import BackendDatabaseInterface
 	db = DatabaseInterface()
 	data = db.execute_query(sql)
 	keys = data[0].keys()

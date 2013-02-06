@@ -1,29 +1,21 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-from pymongo.errors import ConnectionFailure
-from pymongo.mongo_client import MongoClient
+from mongoengine import *
 
-__all__ = ['DatabaseInterface', 'DatabaseError']
-
-import pymongo
+__all__ = ['BackendDatabaseInterface', 'DatabaseError']
 
 __metaclass__ = type
+
 
 class DatabaseError(Exception): pass
 
 
-class DatabaseInterface(object):
+class BackendDatabaseInterface(object):
 
     def __init__(self):
-        self.db = None
-        try:
-            self.connection = MongoClient()
-            self.db = self.connection['katun']
-        except ConnectionFailure as cf:
-            print("Couldn't start Mongo - make sure that the daemon is running properly. Stack:\n" + cf.__str__())
-            self.connection = None
+        self.conn = connect('katun_backend', 'katun_db')
 
     def close(self):
-        self.connection.disconnect()
+        self.conn.disconnect()
 
 

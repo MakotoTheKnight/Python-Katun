@@ -3,12 +3,13 @@
 import unittest
 from unittest.case import TestCase
 
-from db_backend import DatabaseInterface
+from db_backend import BackendDatabaseInterface
+
 
 class TestDatabaseInterface(TestCase):
 
     def setUp(self):
-        self.interface = DatabaseInterface()
+        self.interface = BackendDatabaseInterface()
 
     def tearDown(self):
         self.interface.close()
@@ -18,10 +19,8 @@ class TestDatabaseInterface(TestCase):
 
         #when
 
-
         #then
-        self.assertIsNotNone(self.interface.connection)
-        self.assertIsNotNone(self.interface.db)
+        self.assertIsNotNone(self.interface.conn)
 
 if __name__ == '__main__':
     unittest.main()
