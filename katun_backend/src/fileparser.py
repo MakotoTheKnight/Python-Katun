@@ -1,8 +1,10 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import mutagen, os, time
-from db_backend import BackendDatabaseInterface
+import time
+
+import mutagen
+import os
 
 __all__ = ['walk', 'parse']
 
@@ -10,7 +12,7 @@ def walk(self, d):
     d = os.path.abspath(d)
     dirpath = os.walk(d)
     for folder in dirpath:
-        for f in folder[2]: # for each file in the folder...
+        for f in folder[2]:  # for each file in the folder...
             supported = 'mp3', 'ogg', 'flac'
             if f.split('.')[-1] in supported:
                 try:
