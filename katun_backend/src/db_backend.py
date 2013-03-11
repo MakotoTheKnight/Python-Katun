@@ -4,19 +4,16 @@
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 
+__all__ = ['User', 'Authority', 'Song', 'StaleSong', 'Playlist', 'db']
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://katun:katun@localhost:3306/katun?charset=utf8"
 db = SQLAlchemy(app)
 
 
-class DatabaseError(Exception):
-    pass
-
-
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(length=100))
+    name = db.Column(db.String(length=100), nullable=False)
     permissions = db.relationship('Authority', backref='authority_level', lazy='joined')
 
     def __init__(self, name, permissions):
@@ -38,12 +35,14 @@ class Authority(db.Model):
 
 class Song(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    entry_time = db.Column(db.DateTime)
+    entry_time = db.Column(db.DateTime, nullable=False)
     file_location = db.Column(db.String(length=2048))
+    filetype = db.Column(db.String(length=4))
 
-    def __init__(self, entry_time, file_location):
+    def __init__(self, entry_time, file_location, filetype):
         self.entry_time = entry_time
         self.file_location = file_location
+        self.filetype = filetype
 
     def __str__(self):
         return "Entry time={}, location={}"
@@ -51,14 +50,13 @@ class Song(db.Model):
 
 class Playlist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(length=255), unique=True)
-    dynamic = db.Column(db.Boolean)
-    size = db.Column(db.Integer)
+    playlist_name = db.Column(db.String(length=255), nullable=False)
+    song_id = db.Column(db.Integer, db.ForeignKey('song.id'), nullable=False)
+    last_played_song = db.Column(db.Integer, db.ForeignKey('playlist.song_id'))
 
-    def __init__(self, name, dynamic, size):
-        self.name = name
-        self.dynamic = dynamic
-        self.size = size
+    def __init__(self, playlist_name, song_id):
+        self.playlist_name = playlist_name
+        self.song_id = song_id
 
 
 class StaleSong(db.Model):
@@ -71,15 +69,4 @@ class StaleSong(db.Model):
         self.old_location = old_location
 
 
-class BackendDatabaseInterface(object):
-    # Should be the only thing exposed; no need to use the model/table objects directly.
-
-    def __init__(self, db_type):
-        pass
-
-
-def main():
-    db.create_all()
-
-if __name__ == '__main__':
-    main()
+db.create_all()

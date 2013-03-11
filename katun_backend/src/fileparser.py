@@ -1,68 +1,37 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import time
-
-import mutagen
+from datetime import datetime
 import os
+
+from db_backend import Song, db
 
 __all__ = ['walk', 'parse']
 
-def walk(self, d):
-    d = os.path.abspath(d)
-    dirpath = os.walk(d)
-    for folder in dirpath:
-        for f in folder[2]:  # for each file in the folder...
-            supported = 'mp3', 'ogg', 'flac'
-            if f.split('.')[-1] in supported:
-                try:
-                    self.parse(os.path.join(folder[0], f))
-                except Exception, e:
-                    print e.__unicode__()
-    try:
-        self.db.execute_batch_insert_statement(u"INSERT INTO song VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", self.buf)
-    except Exception, e:
-        print e.__unicode__()
-    finally:
-        del self.buf
-        self.buf = []
+supported = ['.ogg', '.flac', '.mp3']
 
 
-def parse(self, filename):
-    song = mutagen.File(filename, easy=True)
-    artist, title, genre, track, album, bitrate, year, month = '', '', '', '', '', '', '', ''
+def load_directory(d):
+    absolute_path = os.path.abspath(d)
+    for path, foldernames, files in os.walk(absolute_path):
+        for f in files:
+            extension = os.path.splitext(f)
+            if extension[1] in supported:
+                load_song_in_db(os.path.join(path, f), extension)
+            else:
+                print "File not supported at this time, {}".format(f)
+
+
+def load_song_in_db(filename, ext):
     try:
-        artist = song['artist'][0]
-        title = song['title'][0]
-    except Exception:
-        raise InvalidSongException(u"Cannot read " + filename + ": missing critical song information.")
-    if 'genre' in song:
-        genre = song['genre'][0]
-    else:
-        genre = u'Unknown'
-    if 'tracknumber' in song:
-        track = song['tracknumber'][0]
-    else:
-        track = 0
-    if 'album' in song:
-        album = song['album'][0]
-    else:
-        album = u'Unknown'
-    if 'date' in song:
-        year = song['date'][0]
-    else:
-        year = 'Unknown'
-    try:
-        bitrate = int(song.info.bitrate)
-    except AttributeError: # Likely due to us messing with FLAC
-        bitrate = 999999 # Set to a special flag value, to indicate that this is a lossless file.
-    self.buf.append((filename, artist, filename.split('.')[-1], title, genre, track, album, bitrate, year, time.time()))
+        db.session.add(Song(datetime.today().isoformat(), filename, ext[-1].replace('.', '')))
+        db.session.commit()
+    except Exception as e:
+        print "WHAT THE HECK WENT WRONG.", e
 
 
 def main():
-        '''main() functions are used to test the validity and performance of the module alone.
-         This function is to NEVER be called outside of testing purposes.'''
-        parser = Parser(raw_input(u"Enter the path of the music. > "), startfresh=True)
+    load_directory(raw_input(u"Enter the path of the music. > "))
 
 if __name__ == '__main__':
     main()
