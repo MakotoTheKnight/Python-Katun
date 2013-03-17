@@ -8,7 +8,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 __all__ = ['Song', 'StaleSong', 'User', 'Authority', 'Playlist', 'session']
 
-engine = create_engine("mysql://katun:katun@localhost:3306/katun?charset=utf8", convert_unicode=True, echo=True)
+engine = create_engine("mysql+mysqldb://katun:katun@localhost:3306/katun?charset=utf8", convert_unicode=True, echo=True)
 db_session = scoped_session(sessionmaker(bind=engine))
 my_metadata = MetaData(bind=engine)
 Base = declarative_base()
@@ -18,9 +18,9 @@ s = sessionmaker(bind=engine)
 session = s()
 
 
-
 class User(Base):
     __tablename__ = 'user'
+    __table_args__ = {'mysql_charset': 'utf8'}
     id = Column(Integer, primary_key=True)
     name = Column(String(length=100), nullable=False)
     permissions = relationship('Authority', backref='authority_level', lazy='joined')
@@ -34,6 +34,7 @@ class User(Base):
 
 class Authority(Base):
     __tablename__ = 'authority'
+    __table_args__ = {'mysql_charset': 'utf8'}
     id = Column(Integer, primary_key=True)
     authority = Column(String(20))
     user = Column(Integer, ForeignKey('user.id'))
@@ -44,6 +45,7 @@ class Authority(Base):
 
 class Song(Base):
     __tablename__ = 'song'
+    __table_args__ = {'mysql_charset': 'utf8'}
     id = Column(Integer, primary_key=True)
     entry_time = Column(DateTime, nullable=False)
     file_path = Column(String(length=2048))
@@ -59,6 +61,7 @@ class Song(Base):
 
 class Playlist(Base):
     __tablename__ = 'playlist'
+    __table_args__ = {'mysql_charset': 'utf8'}
     id = Column(Integer, primary_key=True)
     playlist_name = Column(String(length=255), nullable=False)
     song_id = Column(Integer, ForeignKey('song.id'), nullable=False)
@@ -71,6 +74,7 @@ class Playlist(Base):
 
 class StaleSong(Base):
     __tablename__ = 'stale_song'
+    __table_args__ = {'mysql_charset': 'utf8'}
     id = Column(Integer, primary_key=True)
     last_update_time = Column(DateTime)
     old_location = Column(String(length=2048))
