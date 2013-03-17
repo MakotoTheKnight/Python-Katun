@@ -6,12 +6,17 @@ from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import scoped_session, sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
 
+__all__ = ['Song', 'StaleSong', 'User', 'Authority', 'Playlist', 'session']
+
 engine = create_engine("mysql://katun:katun@localhost:3306/katun?charset=utf8", convert_unicode=True, echo=True)
 db_session = scoped_session(sessionmaker(bind=engine))
 my_metadata = MetaData(bind=engine)
 Base = declarative_base()
 Base.query = db_session.query_property()
 Base.metadata = my_metadata
+s = sessionmaker(bind=engine)
+session = s()
+
 
 
 class User(Base):
