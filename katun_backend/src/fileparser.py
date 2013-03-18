@@ -2,14 +2,15 @@
 # -*- coding: utf-8 -*-
 
 import os
-import database
 from datetime import datetime
 from time import time
-from models import Song, session
+from models import Song
+from database import get_session
 
-__all__ = ['walk', 'parse']
+__all__ = ['load_directory', 'load_song_in_db']
 
 supported = ('.ogg', '.flac', '.mp3')
+session = get_session()
 
 
 def load_directory(d):
@@ -19,8 +20,7 @@ def load_directory(d):
             extension = os.path.splitext(f)
             if extension[1] in supported:
                 load_song_in_db(path, f, extension)
-            else:
-                print "File not supported at this time: {}".format(f)
+
     start = time()
     session.commit()
     print "Took {} seconds for this commit".format(time() - start)

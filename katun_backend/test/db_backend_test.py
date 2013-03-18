@@ -3,7 +3,7 @@
 import unittest
 from unittest.case import TestCase
 
-from db_backend import BackendDatabaseInterface
+from database import BackendDatabaseInterface
 
 
 class TestDatabaseInterface(TestCase):

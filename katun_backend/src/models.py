@@ -2,21 +2,12 @@
 # -*- coding: utf-8 -*-
 
 from sqlalchemy import Column, String, Integer, DateTime, ForeignKey
-from sqlalchemy import create_engine, MetaData
-from sqlalchemy.orm import scoped_session, sessionmaker, relationship
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
+from database import get_base
 
-__all__ = ['Song', 'StaleSong', 'User', 'Authority', 'Playlist', 'session']
+__all__ = ['Song', 'StaleSong', 'User', 'Authority', 'Playlist']
 
-engine = create_engine("mysql+mysqldb://katun:katun@localhost:3306/katun?charset=utf8", convert_unicode=True, echo=True)
-db_session = scoped_session(sessionmaker(bind=engine))
-my_metadata = MetaData(bind=engine)
-Base = declarative_base()
-Base.query = db_session.query_property()
-Base.metadata = my_metadata
-s = sessionmaker(bind=engine)
-session = s()
-
+Base = get_base()
 
 class User(Base):
     __tablename__ = 'user'
@@ -82,3 +73,6 @@ class StaleSong(Base):
     def __init__(self, last_update, old_location):
         self.last_update_time = last_update
         self.old_location = old_location
+
+# Create the tables.
+Base.metadata.create_all()
