@@ -11,11 +11,13 @@ __all__ = ['get_base', 'get_session']
 def __get_engine(ptcl='mysql+mysqldb', usr='katun', pw='katun', svr='localhost',
                port=3306, tbl='katun'):
     return create_engine(ptcl + '://' + usr + ':' + pw + '@' + svr + ':'
-                         + str(port) + '/' + tbl + '?charset=utf8', echo=True)
+                         + str(port) + '/' + tbl + '?charset=utf8',
+                         echo=True)
 
 
-def get_base():
-    engine = __get_engine()
+def get_base(ptcl='mysql+mysqldb', usr='katun', pw='katun', svr='localhost',
+               port=3306, tbl='katun'):
+    engine = __get_engine(ptcl, usr, pw, svr, port, tbl)
     session_with_scope = scoped_session(sessionmaker(bind=engine))
     base = declarative_base()
     base.query = session_with_scope.query_property()
