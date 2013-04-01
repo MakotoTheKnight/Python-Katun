@@ -1,9 +1,12 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from exceptions import NotImplementedError
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+import models
+
 
 __all__ = ['get_base', 'get_session']
 
@@ -30,10 +33,17 @@ def get_session():
     return sessionmaker(bind=engine)()
 
 
-# Base = declarative_base()
-# db_session = scoped_session(sessionmaker(bind=engine))
-# my_metadata = MetaData(bind=engine)
-# Base.query = db_session.query_property()
-# Base.metadata = my_metadata
-# s = sessionmaker(bind=engine)
-# session = s()
+class DatabaseConnection(object):
+    def __init__(self, ptcl='mysql+mysqldb', usr='katun', pw='katun', svr='localhost',
+               port=3306, tbl='katun'):
+        self.base = get_base(ptcl, user, pw, svr, port, tbl)
+        self.session = get_session()
+
+    def add(self, model, **kwargs):
+        if type(model) is not self.base:
+            raise NotImplementedError('This type of model is not currently supported by Katun.')
+        else:
+            # TODO:  Add context-aware keyword arguments (if a model doesn't support it, don't bother)
+            self.session.begin()
+            self.session.add(model(kwargs))
+
